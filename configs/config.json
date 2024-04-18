@@ -5,10 +5,11 @@
     "author": "kosy-wer"
   },
   "database": {
+    "dbname" : "rest-api",
     "show_sql": true,
     "username": "root",
     "password": "UNMATCHED587",
     "host": "localhost",
-    "port": 3306
+    "port": 5432
   }
 }

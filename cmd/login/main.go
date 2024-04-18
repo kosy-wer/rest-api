@@ -2,11 +2,23 @@ package main
 
 import (
     "fmt"
-    "rest_api/internal/app/register" // Import package rest_api_register dari folder internal/app/rest_api_register
+    "log"
+    "rest_api/internal/app/database"
 )
 
 func main() {
-    fmt.Println("Hello from main package!")
-    register.SayHello() // Panggil fungsi dari package register
+    // Mencoba mendapatkan koneksi ke database
+    db, err := database.GetConnection()
+    if err != nil {
+        log.Fatalf("Error connecting to database: %v", err)
+    }
+    defer db.Close()
+
+    // Test koneksi ke database
+    if err := db.Ping(); err != nil {
+        log.Fatalf("Error pinging database: %v", err)
+    }
+
+    fmt.Println("Successfully connected to the database!")
 }
 
