@@ -5,7 +5,7 @@
     "author": "kosy-wer"
   },
   "database": {
-    "dbname" : "rest-api",
+    "dbname" : "rest_api",
     "show_sql": true,
     "username": "root",
     "password": "UNMATCHED587",
