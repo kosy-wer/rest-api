@@ -4,8 +4,10 @@ import (
 	"context"
 	"database/sql"
 	"github.com/go-playground/validator/v10"
-	/*"rest_api/internal/apps/register/model/domain"
-	"rest_api/internal/apps/register/exception"*/
+	/*
+	"rest_api/internal/apps/register/exception"
+	*/
+	"rest_api/internal/apps/register/model/domain"
 	"rest_api/internal/apps/register/helper"
 	"rest_api/internal/apps/register/model/web"
 	"rest_api/internal/apps/register/repository"
@@ -24,7 +26,6 @@ func NewCategoryService(categoryRepository repository.CategoryRepository, DB *sq
 		Validate:           validate,
 	}
 }
-/*
 func (service *CategoryServiceImpl) Create(ctx context.Context, request web.CategoryCreateRequest) web.CategoryResponse {
 	err := service.Validate.Struct(request)
 	helper.PanicIfError(err)
@@ -42,6 +43,7 @@ func (service *CategoryServiceImpl) Create(ctx context.Context, request web.Cate
 	return helper.ToCategoryResponse(category)
 }
 
+/*
 func (service *CategoryServiceImpl) Update(ctx context.Context, request web.CategoryUpdateRequest) web.CategoryResponse {
 	err := service.Validate.Struct(request)
 	helper.PanicIfError(err)

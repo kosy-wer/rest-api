@@ -11,7 +11,8 @@ import (
 	"io"
 	"net/http"
 	"net/http/httptest"
-	/*"strings"
+	"strings"
+	/*
 	"time"
 	"strconv"
 	"github.com/spf13/viper"
@@ -26,43 +27,6 @@ import (
 	"testing"
 )
 
-/*func setupTestDB() *sql.DB {
-
-
-	// Buat instance Viper
-    config := viper.New()
-    config.SetConfigName("config")
-    config.SetConfigType("json")
-    config.AddConfigPath("/storage/emulated/0/rest_api/configs")
-
-    // Baca konfigurasi dari file JSON
-    if err := config.ReadInConfig(); err != nil {                       return nil, fmt.Errorf("error reading config file: %w", err)                                                                }
-    // Dapatkan nilai konfigurasi koneksi dari Viper
-    host := config.GetString("database.host")
-    port := config.GetInt("database.port")
-    user := config.GetString("database.username") // Ubah sesuai dengan key yang sesuai
-    password := config.GetString("database.password")
-    dbname := config.GetString("database.dbname")
-
-    // Bentuk string koneksi ke PostgreSQL
-    connectionString := fmt.Sprintf("host=%s port=%d user=%s password=%s dbname=%s sslmode=disable", host, port, user, password, dbname)
-
-    // Buka koneksi ke PostgreSQL
-    db, err := sql.Open("postgres", connectionString)
-    if err != nil {
-        return nil, fmt.Errorf("error opening database connection: %w", err)
-    }
-
-    // Konfigurasi koneksi pool
-    db.SetMaxIdleConns(10)
-    db.SetMaxOpenConns(100)
-    db.SetConnMaxIdleTime(5 * time.Minute)
-    db.SetConnMaxLifetime(60 * time.Minute)
-
-    return db, nil
-
-}*/
-
 func setupRouter(db *sql.DB) http.Handler {
 	validate := validator.New()
 	categoryRepository := repository.NewCategoryRepository()
@@ -76,13 +40,17 @@ func setupRouter(db *sql.DB) http.Handler {
 func truncateCategory(db *sql.DB) {
 	db.Exec("TRUNCATE category")
 }
-/*
+
 func TestCreateCategorySuccess(t *testing.T) {
-	db := setupTestDB()
+
+	db , err := database.GetConnection()                                  
+	if err != nil {                                                       
+	   panic(err)                                                                                                                                 
+        }
 	truncateCategory(db)
 	router := setupRouter(db)
 
-	requestBody := strings.NewReader(`{"name" : "Gadget"}`)
+	requestBody := strings.NewReader(`{"name" : "TV"}`)
 	request := httptest.NewRequest(http.MethodPost, "http://localhost:3000/api/categories", requestBody)
 	request.Header.Add("Content-Type", "application/json")
 	request.Header.Add("X-API-Key", "RAHASIA")
@@ -100,11 +68,13 @@ func TestCreateCategorySuccess(t *testing.T) {
 
 	assert.Equal(t, 200, int(responseBody["code"].(float64)))
 	assert.Equal(t, "OK", responseBody["status"])
-	assert.Equal(t, "Gadget", responseBody["data"].(map[string]interface{})["name"])
+	assert.Equal(t, "TV", responseBody["data"].(map[string]interface{})["name"])
 }
 
 func TestCreateCategoryFailed(t *testing.T) {
-	db := setupTestDB()
+	db , err := database.GetConnection()
+        if err != nil {                                                                  panic(err)                                                                                                                                               }
+
 	truncateCategory(db)
 	router := setupRouter(db)
 
@@ -127,7 +97,7 @@ func TestCreateCategoryFailed(t *testing.T) {
 	assert.Equal(t, 400, int(responseBody["code"].(float64)))
 	assert.Equal(t, "BAD REQUEST", responseBody["status"])
 }
-
+/*
 func TestUpdateCategorySuccess(t *testing.T) {
 	db := setupTestDB()
 	truncateCategory(db)
