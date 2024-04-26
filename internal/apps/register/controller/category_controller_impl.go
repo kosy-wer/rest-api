@@ -6,7 +6,7 @@ import (
 	"rest_api/internal/apps/register/helper"
 	"rest_api/internal/apps/register/model/web"
 	"rest_api/internal/apps/register/service"
-	//"strconv"
+	"strconv"
 )
 
 type CategoryControllerImpl struct {
@@ -34,7 +34,6 @@ func (controller *CategoryControllerImpl) Create(writer http.ResponseWriter, req
 	helper.WriteToResponseBody(writer, webResponse)
 }
 
-/*
 func (controller *CategoryControllerImpl) Update(writer http.ResponseWriter, request *http.Request, params httprouter.Params) {
 	categoryUpdateRequest := web.CategoryUpdateRequest{}
 	helper.ReadFromRequestBody(request, &categoryUpdateRequest)
@@ -83,7 +82,7 @@ func (controller *CategoryControllerImpl) FindById(writer http.ResponseWriter, r
 
 	helper.WriteToResponseBody(writer, webResponse)
 }
-*/
+
 func (controller *CategoryControllerImpl) FindAll(writer http.ResponseWriter, request *http.Request, params httprouter.Params) {
 	categoryResponses := controller.CategoryService.FindAll(request.Context())
 	webResponse := web.WebResponse{

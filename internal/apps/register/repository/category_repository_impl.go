@@ -3,7 +3,7 @@ package repository
 import (
 	"context"
 	"database/sql"
-	/*"errors"*/
+	"errors"
 	"rest_api/internal/apps/register/helper"
 	"rest_api/internal/apps/register/model/domain"
 )
@@ -23,37 +23,36 @@ func (repository *CategoryRepositoryImpl) Save(ctx context.Context, tx *sql.Tx, 
 }
 
 
-/*
 func (repository *CategoryRepositoryImpl) Update(ctx context.Context, tx *sql.Tx, category domain.Category) domain.Category {
-	SQL := "update category set name = ? where id = ?"
-	_, err := tx.ExecContext(ctx, SQL, category.Name, category.Id)
-	helper.PanicIfError(err)
-
-	return category
+    SQL := "UPDATE category SET name = $1 WHERE id = $2"
+    _, err := tx.ExecContext(ctx, SQL, category.Name, category.Id)
+    helper.PanicIfError(err)
+    return category
 }
+
 
 func (repository *CategoryRepositoryImpl) Delete(ctx context.Context, tx *sql.Tx, category domain.Category) {
-	SQL := "delete from category where id = ?"
-	_, err := tx.ExecContext(ctx, SQL, category.Id)
-	helper.PanicIfError(err)
+    SQL := "DELETE FROM category WHERE id = $1"
+    _, err := tx.ExecContext(ctx, SQL, category.Id)
+    helper.PanicIfError(err)
 }
+
 
 func (repository *CategoryRepositoryImpl) FindById(ctx context.Context, tx *sql.Tx, categoryId int) (domain.Category, error) {
-	SQL := "select id, name from category where id = ?"
-	rows, err := tx.QueryContext(ctx, SQL, categoryId)
-	helper.PanicIfError(err)
-	defer rows.Close()
-
-	category := domain.Category{}
-	if rows.Next() {
-		err := rows.Scan(&category.Id, &category.Name)
-		helper.PanicIfError(err)
-		return category, nil
-	} else {
-		return category, errors.New("category is not found")
-	}
+    SQL := "SELECT id, name FROM category WHERE id = $1"
+    row := tx.QueryRowContext(ctx, SQL, categoryId)
+    category := domain.Category{}
+    err := row.Scan(&category.Id, &category.Name)
+    if err != nil {
+        if errors.Is(err, sql.ErrNoRows) {
+            return category, errors.New("category is not found")
+        }
+        return category, err
+    }
+    return category, nil
 }
-*/
+
+
 
 func (repository *CategoryRepositoryImpl) FindAll(ctx context.Context, tx *sql.Tx) []domain.Category {
 	SQL := "select id, name from category"

@@ -4,9 +4,7 @@ import (
 	"context"
 	"database/sql"
 	"github.com/go-playground/validator/v10"
-	/*
 	"rest_api/internal/apps/register/exception"
-	*/
 	"rest_api/internal/apps/register/model/domain"
 	"rest_api/internal/apps/register/helper"
 	"rest_api/internal/apps/register/model/web"
@@ -43,7 +41,6 @@ func (service *CategoryServiceImpl) Create(ctx context.Context, request web.Cate
 	return helper.ToCategoryResponse(category)
 }
 
-/*
 func (service *CategoryServiceImpl) Update(ctx context.Context, request web.CategoryUpdateRequest) web.CategoryResponse {
 	err := service.Validate.Struct(request)
 	helper.PanicIfError(err)
@@ -77,6 +74,7 @@ func (service *CategoryServiceImpl) Delete(ctx context.Context, categoryId int) 
 	service.CategoryRepository.Delete(ctx, tx, category)
 }
 
+
 func (service *CategoryServiceImpl) FindById(ctx context.Context, categoryId int) web.CategoryResponse {
 	tx, err := service.DB.Begin()
 	helper.PanicIfError(err)
@@ -89,7 +87,6 @@ func (service *CategoryServiceImpl) FindById(ctx context.Context, categoryId int
 
 	return helper.ToCategoryResponse(category)
 }
-*/
 func (service *CategoryServiceImpl) FindAll(ctx context.Context) []web.CategoryResponse {
 	tx, err := service.DB.Begin()
 	helper.PanicIfError(err)

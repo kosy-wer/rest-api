@@ -4,7 +4,6 @@ import (
 	"context"
 	"database/sql"
 	"encoding/json"
-	"fmt"
 	"github.com/go-playground/validator/v10"
 	_ "github.com/lib/pq"
 	"github.com/stretchr/testify/assert"
@@ -12,18 +11,15 @@ import (
 	"net/http"
 	"net/http/httptest"
 	"strings"
-	/*
-	"time"
 	"strconv"
-	"github.com/spf13/viper"
-	"rest_api/internal/apps/register/helper"*/
+	"fmt"
 	"rest_api/api"
-	"rest_api/internal/apps/register/controller"
 	"rest_api/internal/apps/database"
 	"rest_api/internal/apps/register/middleware"
-	"rest_api/internal/apps/register/model/domain"
-	"rest_api/internal/apps/register/repository"
+	"rest_api/internal/apps/register/controller"
 	"rest_api/internal/apps/register/service"
+	"rest_api/internal/apps/register/repository"
+	"rest_api/internal/apps/register/model/domain"
 	"testing"
 )
 
@@ -97,44 +93,59 @@ func TestCreateCategoryFailed(t *testing.T) {
 	assert.Equal(t, 400, int(responseBody["code"].(float64)))
 	assert.Equal(t, "BAD REQUEST", responseBody["status"])
 }
-/*
+
 func TestUpdateCategorySuccess(t *testing.T) {
-	db := setupTestDB()
-	truncateCategory(db)
+    db, err := database.GetConnection()
+    if err != nil {
+        panic(err)
+    }
+    defer db.Close()
 
-	tx, _ := db.Begin()
-	categoryRepository := repository.NewCategoryRepository()
-	category := categoryRepository.Save(context.Background(), tx, domain.Category{
-		Name: "Gadget",
-	})
-	tx.Commit()
+    truncateCategory(db)
 
-	router := setupRouter(db)
+    tx, _ := db.Begin()
+    categoryRepository := repository.NewCategoryRepository()
+    category := categoryRepository.Save(context.Background(), tx, domain.Category{
+        Name: "Gadget",
+    })
+    tx.Commit()
 
-	requestBody := strings.NewReader(`{"name" : "Gadget"}`)
-	request := httptest.NewRequest(http.MethodPut, "http://localhost:3000/api/categories/"+strconv.Itoa(category.Id), requestBody)
-	request.Header.Add("Content-Type", "application/json")
-	request.Header.Add("X-API-Key", "RAHASIA")
+    router := setupRouter(db)
 
-	recorder := httptest.NewRecorder()
+    // Simpan ID kategori yang baru ditambahkan
+    categoryID := category.Id
 
-	router.ServeHTTP(recorder, request)
+    // Buat permintaan PUT dengan menggunakan ID kategori yang baru ditambahkan
+    requestBody := strings.NewReader(`{"name": "Updated Gadget"}`)
+    request := httptest.NewRequest(http.MethodPut, "http://localhost:3000/api/categories/"+strconv.Itoa(categoryID), requestBody)
+    request.Header.Add("Content-Type", "application/json")
+    request.Header.Add("X-API-Key", "RAHASIA")
 
-	response := recorder.Result()
-	assert.Equal(t, 200, response.StatusCode)
+    recorder := httptest.NewRecorder()
+    router.ServeHTTP(recorder, request)
 
-	body, _ := io.ReadAll(response.Body)
-	var responseBody map[string]interface{}
-	json.Unmarshal(body, &responseBody)
+    response := recorder.Result()
+    assert.Equal(t, 200, response.StatusCode)
 
-	assert.Equal(t, 200, int(responseBody["code"].(float64)))
-	assert.Equal(t, "OK", responseBody["status"])
-	assert.Equal(t, category.Id, int(responseBody["data"].(map[string]interface{})["id"].(float64)))
-	assert.Equal(t, "Gadget", responseBody["data"].(map[string]interface{})["name"])
+    body, _ := io.ReadAll(response.Body)
+    var responseBody map[string]interface{}
+    json.Unmarshal(body, &responseBody)
+
+    assert.Equal(t, 200, int(responseBody["code"].(float64)))
+    assert.Equal(t, "OK", responseBody["status"])
+    assert.Equal(t, categoryID, int(responseBody["data"].(map[string]interface{})["id"].(float64)))
+    assert.Equal(t, "Updated Gadget", responseBody["data"].(map[string]interface{})["name"])
 }
 
+
+
 func TestUpdateCategoryFailed(t *testing.T) {
-	db := setupTestDB()
+	
+
+	db , err := database.GetConnection()                                          
+	if err != nil {
+           panic(err)
+        }
 	truncateCategory(db)
 
 	tx, _ := db.Begin()
@@ -167,7 +178,11 @@ func TestUpdateCategoryFailed(t *testing.T) {
 }
 
 func TestGetCategorySuccess(t *testing.T) {
-	db := setupTestDB()
+	
+
+	db , err := database.GetConnection()
+                                                                                      if err != nil {                                                                  panic(err)                                                                 }
+
 	truncateCategory(db)
 
 	tx, _ := db.Begin()
@@ -200,7 +215,9 @@ func TestGetCategorySuccess(t *testing.T) {
 }
 
 func TestGetCategoryFailed(t *testing.T) {
-	db := setupTestDB()
+	
+	db , err := database.GetConnection()
+                                                                                      if err != nil {                                                                  panic(err)                                                                 }
 	truncateCategory(db)
 	router := setupRouter(db)
 
@@ -222,8 +239,10 @@ func TestGetCategoryFailed(t *testing.T) {
 	assert.Equal(t, "NOT FOUND", responseBody["status"])
 }
 
-func TestDeleteCategorySuccess(t *testing.T) {
-	db := setupTestDB()
+func TestDeleteCategorySuccess(t *testing.T) {	
+
+	db , err := database.GetConnection()
+                                                                                      if err != nil {                                                                  panic(err)                                                                 }
 	truncateCategory(db)
 
 	tx, _ := db.Begin()
@@ -254,8 +273,10 @@ func TestDeleteCategorySuccess(t *testing.T) {
 	assert.Equal(t, "OK", responseBody["status"])
 }
 
-func TestDeleteCategoryFailed(t *testing.T) {
-	db := setupTestDB()
+func TestDeleteCategoryFailed(t *testing.T) {	
+
+	db , err := database.GetConnection()
+                                                                                      if err != nil {                                                                  panic(err)                                                                 }
 	truncateCategory(db)
 	router := setupRouter(db)
 
@@ -277,7 +298,7 @@ func TestDeleteCategoryFailed(t *testing.T) {
 	assert.Equal(t, 404, int(responseBody["code"].(float64)))
 	assert.Equal(t, "NOT FOUND", responseBody["status"])
 }
-*/
+
 func TestListCategoriesSuccess(t *testing.T) {
 	db , err := database.GetConnection()
 	if err != nil {                                                        panic(err)                                                  
@@ -331,10 +352,9 @@ func TestListCategoriesSuccess(t *testing.T) {
 
 func TestUnauthorized(t *testing.T) {
 
+
 	db , err := database.GetConnection()
-        if err != nil {                                                        panic(err)
-                                                                              }
-	
+                                                                                      if err != nil {                                                                  panic(err)                                                                 }
 
 	truncateCategory(db)
 	router := setupRouter(db)
