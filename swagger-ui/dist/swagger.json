@@ -1,0 +1,130 @@
+{
+  "swagger": "2.0",
+  "paths": {
+    "/categories": {
+      "get": {
+        "tags": [
+          "categories"
+        ],
+        "summary": "Retrieves all categories.",
+        "operationId": "listCategories",
+        "responses": {
+          "200": {
+            "$ref": "#/responses/webResponse"
+          },
+          "500": {
+            "description": "\"Internal server error\"",
+            "$ref": "#/responses/errorResponse"
+          }
+        }
+      },
+      "post": {
+        "description": "Creates a new category in the system.",
+        "tags": [
+          "categories"
+        ],
+        "summary": "Create a new category",
+        "operationId": "createCategory",
+        "responses": {
+          "200": {
+            "$ref": "#/responses/webResponse"
+          },
+          "400": {
+            "description": "\"Invalid request payload\"",
+            "$ref": "#/responses/errorResponse"
+          },
+          "500": {
+            "description": "\"Internal server error\"",
+            "$ref": "#/responses/errorResponse"
+          }
+        }
+      }
+    },
+    "/categories/{categoryId}": {
+      "get": {
+        "tags": [
+          "categories"
+        ],
+        "summary": "Retrieves a category by its ID.",
+        "operationId": "getCategory",
+        "responses": {
+          "200": {
+            "$ref": "#/responses/webResponse"
+          },
+          "404": {
+            "description": "\"Category not found\"",
+            "$ref": "#/responses/errorResponse"
+          },
+          "500": {
+            "description": "\"Internal server error\"",
+            "$ref": "#/responses/errorResponse"
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "categories"
+        ],
+        "summary": "Updates an existing category in the system.",
+        "operationId": "updateCategory",
+        "responses": {
+          "200": {
+            "$ref": "#/responses/webResponse"
+          },
+          "400": {
+            "description": "\"Invalid request payload\"",
+            "$ref": "#/responses/errorResponse"
+          },
+          "404": {
+            "description": "\"Category not found\"",
+            "$ref": "#/responses/errorResponse"
+          },
+          "500": {
+            "description": "\"Internal server error\"",
+            "$ref": "#/responses/errorResponse"
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "categories"
+        ],
+        "summary": "Deletes an existing category in the system.",
+        "operationId": "deleteCategory",
+        "responses": {
+          "200": {
+            "$ref": "#/responses/webResponse"
+          },
+          "404": {
+            "description": "\"Category not found\"",
+            "$ref": "#/responses/errorResponse"
+          },
+          "500": {
+            "description": "\"Internal server error\"",
+            "$ref": "#/responses/errorResponse"
+          }
+        }
+      }
+    }
+  },
+  "responses": {
+    "WebResponse": {
+      "description": "WebResponse represents the response format for web requests",
+      "schema": {},
+      "headers": {
+        "code": {
+          "type": "integer",
+          "format": "int64",
+          "description": "HTTP status code"
+        },
+        "data": {
+          "description": "Response data"
+        },
+        "status": {
+          "type": "string",
+          "description": "Status message"
+        }
+      }
+    }
+  }
+}
