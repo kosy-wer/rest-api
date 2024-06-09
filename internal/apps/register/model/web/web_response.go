@@ -1,12 +1,17 @@
 package web
 
-// WebResponse represents the response format for web requests
-// swagger:response
+// WebResponse is a generic response structure used for API responses.
+// swagger:response webResponse
 type WebResponse struct {
-    // HTTP status code
+    // The HTTP status code
+    // example: 200
     Code int `json:"code"`
-    // Status message
+
+    // The status message corresponding to the status code
+    // example: "OK"
     Status string `json:"status"`
-    // Response data
+
+    // The data payload of the response
+    // example: {"id": "12345", "name": "John Doe"}
     Data interface{} `json:"data"`
 }

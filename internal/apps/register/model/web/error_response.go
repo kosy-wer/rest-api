@@ -1,12 +1,19 @@
 package web
 
 // ErrorResponse represents an error response
-// swagger:response
+// swagger:response errorResponse
 type ErrorResponse struct {
-    // HTTP status code
+    // The HTTP status code
+    // example: 400
     Code int `json:"code"`
-    // Status message
+
+    // The status message corresponding to the status code
+    // example: "Bad Request"
     Status string `json:"status"`
-    // Error details
-    Error string `json:"error"`
+
+    // The error details
+    // example: {"message": "Invalid request payload"}
+    Error struct {
+        Message string `json:"message"`
+    } `json:"error"`
 }

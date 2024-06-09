@@ -1,23 +1,7 @@
 {
   "swagger": "2.0",
   "paths": {
-    "/categories": {
-      "get": {
-        "tags": [
-          "categories"
-        ],
-        "summary": "Retrieves all categories.",
-        "operationId": "listCategories",
-        "responses": {
-          "200": {
-            "$ref": "#/responses/webResponse"
-          },
-          "500": {
-            "description": "\"Internal server error\"",
-            "$ref": "#/responses/errorResponse"
-          }
-        }
-      },
+    "/api/categories": {
       "post": {
         "description": "Creates a new category in the system.",
         "tags": [
@@ -25,104 +9,290 @@
         ],
         "summary": "Create a new category",
         "operationId": "createCategory",
+        "parameters": [
+          {
+            "type": "string",
+            "description": "API key for authorization",
+            "name": "X-API-Key",
+            "in": "header",
+            "required": true
+          },
+          {
+            "description": "The category object to create.",
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/CategoryCreateRequest"
+            }
+          }
+        ],
         "responses": {
           "200": {
-            "$ref": "#/responses/webResponse"
+            "description": "Successfully created category.",
+            "schema": {
+              "$ref": "#/responses/webResponse"
+            }
           },
           "400": {
-            "description": "\"Invalid request payload\"",
-            "$ref": "#/responses/errorResponse"
+            "description": "Invalid request payload.",
+            "schema": {
+              "$ref": "#/responses/errorResponse"
+            }
           },
           "500": {
-            "description": "\"Internal server error\"",
-            "$ref": "#/responses/errorResponse"
+            "description": "Internal server error.",
+            "schema": {
+              "$ref": "#/responses/errorResponse"
+            }
+          }
+        }
+      }
+    },
+    "/categories": {
+      "get": {
+        "description": "Retrieves all categories.",
+        "tags": [
+          "categories"
+        ],
+        "summary": "Find all categories",
+        "operationId": "listCategories",
+        "responses": {
+          "200": {
+            "description": "Successfully retrieved categories.",
+            "schema": {
+              "$ref": "#/responses/webResponse"
+            }
+          },
+          "500": {
+            "description": "Internal server error.",
+            "schema": {
+              "$ref": "#/responses/errorResponse"
+            }
           }
         }
       }
     },
     "/categories/{categoryId}": {
       "get": {
+        "description": "Retrieves a category by its ID.",
         "tags": [
           "categories"
         ],
-        "summary": "Retrieves a category by its ID.",
+        "summary": "Find a category by ID",
         "operationId": "getCategory",
+        "parameters": [
+          {
+            "type": "integer",
+            "description": "ID of the category to retrieve",
+            "name": "categoryId",
+            "in": "path",
+            "required": true
+          }
+        ],
         "responses": {
           "200": {
-            "$ref": "#/responses/webResponse"
+            "description": "Successfully retrieved category.",
+            "schema": {
+              "$ref": "#/responses/webResponse"
+            }
           },
           "404": {
-            "description": "\"Category not found\"",
-            "$ref": "#/responses/errorResponse"
+            "description": "Category not found.",
+            "schema": {
+              "$ref": "#/responses/errorResponse"
+            }
           },
           "500": {
-            "description": "\"Internal server error\"",
-            "$ref": "#/responses/errorResponse"
+            "description": "Internal server error.",
+            "schema": {
+              "$ref": "#/responses/errorResponse"
+            }
           }
         }
       },
       "put": {
+        "description": "Updates an existing category in the system.",
         "tags": [
           "categories"
         ],
-        "summary": "Updates an existing category in the system.",
+        "summary": "Update an existing category",
         "operationId": "updateCategory",
+        "parameters": [
+          {
+            "type": "integer",
+            "description": "ID of the category to update",
+            "name": "categoryId",
+            "in": "path",
+            "required": true
+          },
+          {
+            "description": "The updated category object",
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/CategoryUpdateRequest"
+            }
+          }
+        ],
         "responses": {
           "200": {
-            "$ref": "#/responses/webResponse"
+            "description": "Successfully updated category.",
+            "schema": {
+              "$ref": "#/responses/webResponse"
+            }
           },
           "400": {
-            "description": "\"Invalid request payload\"",
-            "$ref": "#/responses/errorResponse"
+            "description": "Invalid request payload.",
+            "schema": {
+              "$ref": "#/responses/errorResponse"
+            }
           },
           "404": {
-            "description": "\"Category not found\"",
-            "$ref": "#/responses/errorResponse"
+            "description": "Category not found.",
+            "schema": {
+              "$ref": "#/responses/errorResponse"
+            }
           },
           "500": {
-            "description": "\"Internal server error\"",
-            "$ref": "#/responses/errorResponse"
+            "description": "Internal server error.",
+            "schema": {
+              "$ref": "#/responses/errorResponse"
+            }
           }
         }
       },
       "delete": {
+        "description": "Deletes an existing category in the system.",
         "tags": [
           "categories"
         ],
-        "summary": "Deletes an existing category in the system.",
+        "summary": "Delete an existing category",
         "operationId": "deleteCategory",
+        "parameters": [
+          {
+            "type": "integer",
+            "description": "ID of the category to delete",
+            "name": "categoryId",
+            "in": "path",
+            "required": true
+          }
+        ],
         "responses": {
           "200": {
-            "$ref": "#/responses/webResponse"
+            "description": "Successfully deleted category.",
+            "schema": {
+              "$ref": "#/responses/webResponse"
+            }
           },
           "404": {
-            "description": "\"Category not found\"",
-            "$ref": "#/responses/errorResponse"
+            "description": "Category not found.",
+            "schema": {
+              "$ref": "#/responses/errorResponse"
+            }
           },
           "500": {
-            "description": "\"Internal server error\"",
-            "$ref": "#/responses/errorResponse"
+            "description": "Internal server error.",
+            "schema": {
+              "$ref": "#/responses/errorResponse"
+            }
           }
         }
       }
     }
   },
+  "definitions": {
+    "CategoryCreateRequest": {
+      "description": "CategoryCreateRequest represents the request payload for creating a category",
+      "type": "object",
+      "required": [
+        "name"
+      ],
+      "properties": {
+        "name": {
+          "description": "Name of the category",
+          "type": "string",
+          "maxLength": 100,
+          "minLength": 1,
+          "x-go-name": "Name"
+        }
+      },
+      "x-go-package": "rest_api/internal/apps/register/model/web"
+    },
+    "CategoryUpdateRequest": {
+      "description": "CategoryUpdateRequest represents the request payload for updating a category",
+      "type": "object",
+      "required": [
+        "id",
+        "name"
+      ],
+      "properties": {
+        "id": {
+          "description": "ID of the category",
+          "type": "integer",
+          "format": "int64",
+          "x-go-name": "Id"
+        },
+        "name": {
+          "description": "Updated name of the category",
+          "type": "string",
+          "maxLength": 200,
+          "minLength": 1,
+          "x-go-name": "Name"
+        }
+      },
+      "x-go-package": "rest_api/internal/apps/register/model/web"
+    }
+  },
   "responses": {
-    "WebResponse": {
-      "description": "WebResponse represents the response format for web requests",
+    "errorResponse": {
+      "description": "ErrorResponse represents an error response",
+      "schema": {
+        "type": "object",
+        "properties": {
+          "message": {
+            "type": "string",
+            "x-go-name": "Message"
+          }
+        }
+      },
+      "headers": {
+        "code": {
+          "type": "integer",
+          "format": "int64",
+          "example": 400,
+          "description": "The HTTP status code"
+        },
+        "error": {
+          "example": "{\"message\": \"Invalid request payload\"}",
+          "description": "The error details"
+        },
+        "status": {
+          "type": "string",
+          "example": "\"Bad Request\"",
+          "description": "The status message corresponding to the status code"
+        }
+      }
+    },
+    "webResponse": {
+      "description": "WebResponse is a generic response structure used for API responses.",
       "schema": {},
       "headers": {
         "code": {
           "type": "integer",
           "format": "int64",
-          "description": "HTTP status code"
+          "example": 200,
+          "description": "The HTTP status code"
         },
         "data": {
-          "description": "Response data"
+          "example": "{\"id\": \"12345\", \"name\": \"John Doe\"}",
+          "description": "The data payload of the response"
         },
         "status": {
           "type": "string",
-          "description": "Status message"
+          "example": "\"OK\"",
+          "description": "The status message corresponding to the status code"
         }
       }
     }

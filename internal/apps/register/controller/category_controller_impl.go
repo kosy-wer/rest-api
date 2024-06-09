@@ -21,16 +21,37 @@ func NewCategoryController(categoryService service.CategoryService) CategoryCont
     }
 }
 
-// swagger:route POST /categories categories createCategory
-//
 // Create a new category
+// swagger:operation POST /api/categories categories createCategory
 //
-// Creates a new category in the system.
-//
-// Responses:
-//   200: webResponse
-//   400: errorResponse "Invalid request payload"
-//   500: errorResponse "Internal server error"
+// ---
+// summary: Create a new category
+// description: Creates a new category in the system.
+// parameters:
+// - name: X-API-Key
+//   in: header
+//   description: API key for authorization
+//   required: true
+//   type: string
+// - name: body
+//   in: body
+//   description: The category object to create.
+//   required: true
+//   schema:
+//     "$ref": "#/definitions/CategoryCreateRequest"
+// responses:
+//   '200':
+//     description: Successfully created category.
+//     schema:
+//       "$ref": "#/responses/webResponse"
+//   '400':
+//     description: Invalid request payload.
+//     schema:
+//       "$ref": "#/responses/errorResponse"
+//   '500':
+//     description: Internal server error.
+//     schema:
+//       "$ref": "#/responses/errorResponse"
 func (controller *CategoryControllerImpl) Create(writer http.ResponseWriter, request *http.Request, params httprouter.Params) {
     categoryCreateRequest := web.CategoryCreateRequest{}
     helper.ReadFromRequestBody(request, &categoryCreateRequest)
@@ -46,15 +67,40 @@ func (controller *CategoryControllerImpl) Create(writer http.ResponseWriter, req
 }
 
 // Update an existing category
-// swagger:route PUT /categories/{categoryId} categories updateCategory
+// swagger:operation PUT /categories/{categoryId} categories updateCategory
 //
-// Updates an existing category in the system.
-//
-// Responses:
-//   200: webResponse
-//   400: errorResponse "Invalid request payload"
-//   404: errorResponse "Category not found"
-//   500: errorResponse "Internal server error"
+// ---
+// summary: Update an existing category
+// description: Updates an existing category in the system.
+// parameters:
+// - name: categoryId
+//   in: path
+//   description: ID of the category to update
+//   required: true
+//   type: integer
+// - name: body
+//   in: body
+//   description: The updated category object
+//   required: true
+//   schema:
+//     "$ref": "#/definitions/CategoryUpdateRequest"
+// responses:
+//   '200':
+//     description: Successfully updated category.
+//     schema:
+//       "$ref": "#/responses/webResponse"
+//   '400':
+//     description: Invalid request payload.
+//     schema:
+//       "$ref": "#/responses/errorResponse"
+//   '404':
+//     description: Category not found.
+//     schema:
+//       "$ref": "#/responses/errorResponse"
+//   '500':
+//     description: Internal server error.
+//     schema:
+//       "$ref": "#/responses/errorResponse"
 func (controller *CategoryControllerImpl) Update(writer http.ResponseWriter, request *http.Request, params httprouter.Params) {
     categoryUpdateRequest := web.CategoryUpdateRequest{}
     helper.ReadFromRequestBody(request, &categoryUpdateRequest)
@@ -76,14 +122,30 @@ func (controller *CategoryControllerImpl) Update(writer http.ResponseWriter, req
 }
 
 // Delete an existing category
-// swagger:route DELETE /categories/{categoryId} categories deleteCategory
+// swagger:operation DELETE /categories/{categoryId} categories deleteCategory
 //
-// Deletes an existing category in the system.
-//
-// Responses:
-//   200: webResponse
-//   404: errorResponse "Category not found"
-//   500: errorResponse "Internal server error"
+// ---
+// summary: Delete an existing category
+// description: Deletes an existing category in the system.
+// parameters:
+// - name: categoryId
+//   in: path
+//   description: ID of the category to delete
+//   required: true
+//   type: integer
+// responses:
+//   '200':
+//     description: Successfully deleted category.
+//     schema:
+//       "$ref": "#/responses/webResponse"
+//   '404':
+//     description: Category not found.
+//     schema:
+//       "$ref": "#/responses/errorResponse"
+//   '500':
+//     description: Internal server error.
+//     schema:
+//       "$ref": "#/responses/errorResponse"
 func (controller *CategoryControllerImpl) Delete(writer http.ResponseWriter, request *http.Request, params httprouter.Params) {
     categoryId := params.ByName("categoryId")
     id, err := strconv.Atoi(categoryId)
@@ -99,14 +161,30 @@ func (controller *CategoryControllerImpl) Delete(writer http.ResponseWriter, req
 }
 
 // Find a category by ID
-// swagger:route GET /categories/{categoryId} categories getCategory
+// swagger:operation GET /categories/{categoryId} categories getCategory
 //
-// Retrieves a category by its ID.
-//
-// Responses:
-//   200: webResponse
-//   404: errorResponse "Category not found"
-//   500: errorResponse "Internal server error"
+// ---
+// summary: Find a category by ID
+// description: Retrieves a category by its ID.
+// parameters:
+// - name: categoryId
+//   in: path
+//   description: ID of the category to retrieve
+//   required: true
+//   type: integer
+// responses:
+//   '200':
+//     description: Successfully retrieved category.
+//     schema:
+//       "$ref": "#/responses/webResponse"
+//   '404':
+//     description: Category not found.
+//     schema:
+//       "$ref": "#/responses/errorResponse"
+//   '500':
+//     description: Internal server error.
+//     schema:
+//       "$ref": "#/responses/errorResponse"
 func (controller *CategoryControllerImpl) FindById(writer http.ResponseWriter, request *http.Request, params httprouter.Params) {
     categoryId := params.ByName("categoryId")
     id, err := strconv.Atoi(categoryId)
@@ -123,13 +201,20 @@ func (controller *CategoryControllerImpl) FindById(writer http.ResponseWriter, r
 }
 
 // Find all categories
-// swagger:route GET /categories categories listCategories
+// swagger:operation GET /categories categories listCategories
 //
-// Retrieves all categories.
-//
-// Responses:
-//   200: webResponse
-//   500: errorResponse "Internal server error"
+// ---
+// summary: Find all categories
+// description: Retrieves all categories.
+// responses:
+//   '200':
+//     description: Successfully retrieved categories.
+//     schema:
+//       "$ref": "#/responses/webResponse"
+//   '500':
+//     description: Internal server error.
+//     schema:
+//       "$ref": "#/responses/errorResponse"
 func (controller *CategoryControllerImpl) FindAll(writer http.ResponseWriter, request *http.Request, params httprouter.Params) {
     categoryResponses := controller.CategoryService.FindAll(request.Context())
     webResponse := web.WebResponse{
