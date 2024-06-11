@@ -49,6 +49,114 @@
         }
       }
     },
+<<<<<<< HEAD:swagger-ui/dist/swagger.json
+=======
+    "/api/categories/{categoryId}": {
+      "put": {
+        "description": "Updates an existing category in the system.",
+        "tags": [
+          "categories"
+        ],
+        "summary": "Update an existing category",
+        "operationId": "updateCategory",
+        "parameters": [
+          {
+            "type": "string",
+            "description": "API key for authorization",
+            "name": "X-API-Key",
+            "in": "header",
+            "required": true
+          },
+          {
+            "type": "integer",
+            "description": "The ID of the category to update",
+            "name": "categoryId",
+            "in": "path",
+            "required": true
+          },
+          {
+            "description": "The updated category object",
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/CategoryUpdateRequest"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully updated category.",
+            "schema": {
+              "$ref": "#/responses/webResponse"
+            }
+          },
+          "400": {
+            "description": "Invalid request payload.",
+            "schema": {
+              "$ref": "#/responses/errorResponse"
+            }
+          },
+          "404": {
+            "description": "Category not found.",
+            "schema": {
+              "$ref": "#/responses/errorResponse"
+            }
+          },
+          "500": {
+            "description": "Internal server error.",
+            "schema": {
+              "$ref": "#/responses/errorResponse"
+            }
+          }
+        }
+      },
+      "delete": {
+        "description": "Deletes an existing category in the system.",
+        "tags": [
+          "categories"
+        ],
+        "summary": "Delete an existing category",
+        "operationId": "deleteCategory",
+        "parameters": [
+          {
+            "type": "string",
+            "description": "API key for authorization",
+            "name": "X-API-Key",
+            "in": "header",
+            "required": true
+          },
+          {
+            "type": "integer",
+            "description": "ID of the category to delete",
+            "name": "categoryId",
+            "in": "path",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully deleted category.",
+            "schema": {
+              "$ref": "#/responses/webResponse"
+            }
+          },
+          "404": {
+            "description": "Category not found.",
+            "schema": {
+              "$ref": "#/responses/errorResponse"
+            }
+          },
+          "500": {
+            "description": "Internal server error.",
+            "schema": {
+              "$ref": "#/responses/errorResponse"
+            }
+          }
+        }
+      }
+    },
+>>>>>>> 68da828 (make docs for delete):swagger-ui/dist/swagger-data.json
     "/categories": {
       "get": {
         "description": "Retrieves all categories.",
@@ -110,6 +218,7 @@
             }
           }
         }
+<<<<<<< HEAD:swagger-ui/dist/swagger.json
       },
       "put": {
         "description": "Updates an existing category in the system.",
@@ -199,6 +308,8 @@
             }
           }
         }
+=======
+>>>>>>> 68da828 (make docs for delete):swagger-ui/dist/swagger-data.json
       }
     }
   },

@@ -121,13 +121,21 @@ func (controller *CategoryControllerImpl) Update(writer http.ResponseWriter, req
     helper.WriteToResponseBody(writer, webResponse)
 }
 
-// Delete an existing category
-// swagger:operation DELETE /categories/{categoryId} categories deleteCategory
+// DeleteCategory deletes an existing category from the system.
+//
+// This endpoint allows deleting an existing category by providing its ID.
+//
+// swagger:operation DELETE /api/categories/{categoryId} categories deleteCategory
 //
 // ---
 // summary: Delete an existing category
 // description: Deletes an existing category in the system.
 // parameters:
+// - name: X-API-Key
+//   in: header
+//   description: API key for authorization
+//   required: true
+//   type: string
 // - name: categoryId
 //   in: path
 //   description: ID of the category to delete
