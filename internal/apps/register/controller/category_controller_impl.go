@@ -167,14 +167,21 @@ func (controller *CategoryControllerImpl) Delete(writer http.ResponseWriter, req
 
     helper.WriteToResponseBody(writer, webResponse)
 }
-
-// Find a category by ID
-// swagger:operation GET /categories/{categoryId} categories getCategory
+// FindById retrieves a category by its ID.
+//
+// This endpoint allows retrieving a category by providing its ID.
+//
+// swagger:operation GET /api/categories/{categoryId} categories get
 //
 // ---
 // summary: Find a category by ID
 // description: Retrieves a category by its ID.
 // parameters:
+// - name: X-API-Key
+//   in: header
+//   description: API key for authorization
+//   required: true
+//   type: string
 // - name: categoryId
 //   in: path
 //   description: ID of the category to retrieve
