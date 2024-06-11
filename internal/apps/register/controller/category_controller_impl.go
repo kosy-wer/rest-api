@@ -65,17 +65,24 @@ func (controller *CategoryControllerImpl) Create(writer http.ResponseWriter, req
 
     helper.WriteToResponseBody(writer, webResponse)
 }
-
-// Update an existing category
-// swagger:operation PUT /categories/{categoryId} categories updateCategory
+// UpdateCategory updates an existing category in the system.
+//
+// This endpoint allows updating an existing category by providing the category ID and the updated category object.
+//
+// swagger:operation PUT /api/categories/{categoryId} categories updateCategory
 //
 // ---
 // summary: Update an existing category
 // description: Updates an existing category in the system.
 // parameters:
+// - name: X-API-Key
+//   in: header
+//   description: API key for authorization
+//   required: true
+//   type: string
 // - name: categoryId
 //   in: path
-//   description: ID of the category to update
+//   description: The ID of the category to update
 //   required: true
 //   type: integer
 // - name: body
@@ -121,15 +128,15 @@ func (controller *CategoryControllerImpl) Update(writer http.ResponseWriter, req
     helper.WriteToResponseBody(writer, webResponse)
 }
 
-// DeleteCategory deletes an existing category from the system.
+// DeleteCategory deletes a category from the system.
 //
-// This endpoint allows deleting an existing category by providing its ID.
+// This endpoint allows deleting a category by providing its ID.
 //
 // swagger:operation DELETE /api/categories/{categoryId} categories deleteCategory
 //
 // ---
-// summary: Delete an existing category
-// description: Deletes an existing category in the system.
+// summary: Delete a category
+// description: Deletes a category from the system.
 // parameters:
 // - name: X-API-Key
 //   in: header
@@ -138,12 +145,12 @@ func (controller *CategoryControllerImpl) Update(writer http.ResponseWriter, req
 //   type: string
 // - name: categoryId
 //   in: path
-//   description: ID of the category to delete
+//   description: The ID of the category to delete
 //   required: true
 //   type: integer
 // responses:
 //   '200':
-//     description: Successfully deleted category.
+//     description: Category deleted successfully.
 //     schema:
 //       "$ref": "#/responses/webResponse"
 //   '404':
@@ -214,13 +221,21 @@ func (controller *CategoryControllerImpl) FindById(writer http.ResponseWriter, r
 
     helper.WriteToResponseBody(writer, webResponse)
 }
-
-// Find all categories
-// swagger:operation GET /categories categories listCategories
+// FindAll retrieves all categories.
+//
+// This endpoint allows retrieving all categories.
+//
+// swagger:operation GET /api/categories categories listCategories
 //
 // ---
 // summary: Find all categories
 // description: Retrieves all categories.
+// parameters:
+// - name: X-API-Key
+//   in: header
+//   description: API key for authorization
+//   required: true
+//   type: string
 // responses:
 //   '200':
 //     description: Successfully retrieved categories.

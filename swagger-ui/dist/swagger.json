@@ -2,6 +2,37 @@
   "swagger": "2.0",
   "paths": {
     "/api/categories": {
+      "get": {
+        "description": "Retrieves all categories.",
+        "tags": [
+          "categories"
+        ],
+        "summary": "Find all categories",
+        "operationId": "listCategories",
+        "parameters": [
+          {
+            "type": "string",
+            "description": "API key for authorization",
+            "name": "X-API-Key",
+            "in": "header",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully retrieved categories.",
+            "schema": {
+              "$ref": "#/responses/webResponse"
+            }
+          },
+          "500": {
+            "description": "Internal server error.",
+            "schema": {
+              "$ref": "#/responses/errorResponse"
+            }
+          }
+        }
+      },
       "post": {
         "description": "Creates a new category in the system.",
         "tags": [
@@ -94,13 +125,13 @@
           }
         }
       },
-      "delete": {
-        "description": "Deletes an existing category in the system.",
+      "put": {
+        "description": "Updates an existing category in the system.",
         "tags": [
           "categories"
         ],
-        "summary": "Delete an existing category",
-        "operationId": "deleteCategory",
+        "summary": "Update an existing category",
+        "operationId": "updateCategory",
         "parameters": [
           {
             "type": "string",
@@ -111,70 +142,7 @@
           },
           {
             "type": "integer",
-            "description": "ID of the category to delete",
-            "name": "categoryId",
-            "in": "path",
-            "required": true
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Successfully deleted category.",
-            "schema": {
-              "$ref": "#/responses/webResponse"
-            }
-          },
-          "404": {
-            "description": "Category not found.",
-            "schema": {
-              "$ref": "#/responses/errorResponse"
-            }
-          },
-          "500": {
-            "description": "Internal server error.",
-            "schema": {
-              "$ref": "#/responses/errorResponse"
-            }
-          }
-        }
-      }
-    },
-    "/categories": {
-      "get": {
-        "description": "Retrieves all categories.",
-        "tags": [
-          "categories"
-        ],
-        "summary": "Find all categories",
-        "operationId": "listCategories",
-        "responses": {
-          "200": {
-            "description": "Successfully retrieved categories.",
-            "schema": {
-              "$ref": "#/responses/webResponse"
-            }
-          },
-          "500": {
-            "description": "Internal server error.",
-            "schema": {
-              "$ref": "#/responses/errorResponse"
-            }
-          }
-        }
-      }
-    },
-    "/categories/{categoryId}": {
-      "put": {
-        "description": "Updates an existing category in the system.",
-        "tags": [
-          "categories"
-        ],
-        "summary": "Update an existing category",
-        "operationId": "updateCategory",
-        "parameters": [
-          {
-            "type": "integer",
-            "description": "ID of the category to update",
+            "description": "The ID of the category to update",
             "name": "categoryId",
             "in": "path",
             "required": true
@@ -200,6 +168,50 @@
             "description": "Invalid request payload.",
             "schema": {
               "$ref": "#/responses/errorResponse"
+            }
+          },
+          "404": {
+            "description": "Category not found.",
+            "schema": {
+              "$ref": "#/responses/errorResponse"
+            }
+          },
+          "500": {
+            "description": "Internal server error.",
+            "schema": {
+              "$ref": "#/responses/errorResponse"
+            }
+          }
+        }
+      },
+      "delete": {
+        "description": "Deletes a category from the system.",
+        "tags": [
+          "categories"
+        ],
+        "summary": "Delete a category",
+        "operationId": "deleteCategory",
+        "parameters": [
+          {
+            "type": "string",
+            "description": "API key for authorization",
+            "name": "X-API-Key",
+            "in": "header",
+            "required": true
+          },
+          {
+            "type": "integer",
+            "description": "The ID of the category to delete",
+            "name": "categoryId",
+            "in": "path",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Category deleted successfully.",
+            "schema": {
+              "$ref": "#/responses/webResponse"
             }
           },
           "404": {
