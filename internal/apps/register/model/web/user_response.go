@@ -1,6 +1,6 @@
 package web
 
-type CategoryResponse struct {
+type UserResponse struct {
 	Id   int    `json:"id"`
 	Name string `json:"name"`
 }

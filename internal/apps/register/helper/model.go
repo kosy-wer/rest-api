@@ -1,21 +1,22 @@
 package helper
 
 import (
-	"rest_api/internal/apps/register/model/domain"
-	"rest_api/internal/apps/register/model/web"
+    "rest_api/internal/apps/register/model/domain"
+    "rest_api/internal/apps/register/model/web"
 )
 
-func ToCategoryResponse(category domain.Category) web.CategoryResponse {
-	return web.CategoryResponse{
-		Id:   category.Id,
-		Name: category.Name,
-	}
+func ToUserResponse(user domain.User) web.UserResponse {
+    return web.UserResponse{
+        Id:   user.Id,
+        Name: user.Name,
+    }
 }
 
-func ToCategoryResponses(categories []domain.Category) []web.CategoryResponse {
-	var categoryResponses []web.CategoryResponse
-	for _, category := range categories {
-		categoryResponses = append(categoryResponses, ToCategoryResponse(category))
-	}
-	return categoryResponses
+func ToUserResponses(users []domain.User) []web.UserResponse {
+    var userResponses []web.UserResponse
+    for _, user := range users {
+        userResponses = append(userResponses, ToUserResponse(user))
+    }
+    return userResponses
 }
+

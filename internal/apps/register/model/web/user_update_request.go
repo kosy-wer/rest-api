@@ -1,12 +1,12 @@
 package web
 
-// CategoryUpdateRequest represents the request payload for updating a category
+// UserUpdateRequest represents the request payload for updating a user
 // swagger:model
-type CategoryUpdateRequest struct {
-    // ID of the category
+type UserUpdateRequest struct {
+    // ID of the user
     // required: true
     Id int `validate:"required" json:"id"`
-    // Updated name of the category
+    // Updated name of the user
     // required: true
     // min length: 1
     // max length: 200

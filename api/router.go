@@ -1,22 +1,23 @@
 package api
 
 import (
-	"net/http"
-	"github.com/julienschmidt/httprouter"
-	"rest_api/internal/apps/register/controller"
-	"rest_api/internal/apps/register/exception"
+    "net/http"
+    "github.com/julienschmidt/httprouter"
+    "rest_api/internal/apps/register/controller"
+    "rest_api/internal/apps/register/exception"
 )
 
-func NewRouter(categoryController controller.CategoryController) *httprouter.Router {
-	router := httprouter.New()
+func NewRouter(userController controller.UserController) *httprouter.Router {
+    router := httprouter.New()
 
-	router.GET("/api/categories", categoryController.FindAll)
-	router.POST("/api/categories", categoryController.Create)
-	router.PUT("/api/categories/:categoryId", categoryController.Update)
-	router.GET("/api/categories/:categoryId", categoryController.FindById)
-	router.DELETE("/api/categories/:categoryId", categoryController.Delete)
+    // User routes
+    router.GET("/api/users", userController.FindAll)
+    router.POST("/api/users", userController.Create)
+    router.PUT("/api/users/:userId", userController.Update)
+    router.GET("/api/users/:userId", userController.FindById)
+    router.DELETE("/api/users/:userId", userController.Delete)
 
-	// Serve Swagger UI
+    // Serve Swagger UI
     fileServer := http.FileServer(http.Dir("/storage/emulated/0/rest_api/swagger-ui/dist"))
     router.Handler(http.MethodGet, "/swagger-ui/*filepath", http.StripPrefix("/swagger-ui", fileServer))
 
@@ -25,7 +26,8 @@ func NewRouter(categoryController controller.CategoryController) *httprouter.Rou
         http.ServeFile(w, r, "/storage/emulated/0/rest_api/swagger-ui/dist/swagger.json")
     })
 
-	router.PanicHandler = exception.ErrorHandler
+    router.PanicHandler = exception.ErrorHandler
 
-	return router
+    return router
 }
+
