@@ -7,5 +7,5 @@ type UserCreateRequest struct {
     // required: true
     // min length: 1
     // max length: 100
-    Name string `json:"name"`
+    Name string `validate:"required,min=1,max=100" json:"name"`
 }

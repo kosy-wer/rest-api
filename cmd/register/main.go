@@ -10,7 +10,7 @@ import (
     "rest_api/internal/apps/register/helper"
     "rest_api/internal/apps/register/repository"
     "rest_api/internal/apps/register/service"
-    //"rest_api/internal/apps/register/middleware"
+    "rest_api/internal/apps/register/middleware"
 )
 
 func main() {
@@ -31,8 +31,8 @@ func main() {
 
     server := http.Server{
         Addr:    "localhost:3000",
-        Handler: router,
-        //Handler: middleware.NewAuthMiddleware(router),
+        //Handler: router,
+        Handler: middleware.NewAuthMiddleware(router),
     }
 
     err = server.ListenAndServe()

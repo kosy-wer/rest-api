@@ -17,6 +17,11 @@ func NewRouter(userController controller.UserController) *httprouter.Router {
     router.GET("/api/users/:userId", userController.FindById)
     router.DELETE("/api/users/:userId", userController.Delete)
 
+    router.POST("/api/login", userController.LoginHandler)
+    /* Login and Logout routes
+    router.POST("/api/logout", controller.LogoutHandler)
+    */
+
     // Serve Swagger UI
     fileServer := http.FileServer(http.Dir("/storage/emulated/0/rest_api/swagger-ui/dist"))
     router.Handler(http.MethodGet, "/swagger-ui/*filepath", http.StripPrefix("/swagger-ui", fileServer))
@@ -28,6 +33,6 @@ func NewRouter(userController controller.UserController) *httprouter.Router {
 
     router.PanicHandler = exception.ErrorHandler
 
+    // Apply the middleware
     return router
 }
-

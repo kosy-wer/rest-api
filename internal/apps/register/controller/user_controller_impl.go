@@ -2,6 +2,8 @@ package controller
 
 import (
     "github.com/julienschmidt/httprouter"
+    //"github.com/gorilla/sessions"
+    //"os"
     "net/http"
     "rest_api/internal/apps/register/helper"
     "rest_api/internal/apps/register/model/web"
@@ -247,3 +249,40 @@ func (controller *UserControllerImpl) FindAll(writer http.ResponseWriter, reques
     helper.WriteToResponseBody(writer, webResponse)
 }
 
+
+func (controller *UserControllerImpl) LoginHandler(writer http.ResponseWriter, request *http.Request, params httprouter.Params) {
+	err := request.ParseForm()
+	if err != nil {
+		panic(err)
+	}
+
+    idValue := request.PostForm.Get("id")
+    id, err := strconv.Atoi(idValue)
+    helper.PanicIfError(err)
+
+    userResponse := controller.UserService.FindById(request.Context(), id)
+    webResponse := web.WebResponse{
+        Code:   200,                                                          Status: "OK",
+        Data:   userResponse,
+    }
+
+    helper.WriteToResponseBody(writer, webResponse)
+}
+/*
+var store = sessions.NewCookieStore([]byte(os.Getenv("SESSION_SECRET")))
+func LogoutHandler(w http.ResponseWriter, r *http.Request) {
+    session, _ := store.Get(r, "session.id")
+    session.Values["authenticated"] = false
+    session.Save(r, w)
+    w.Write([]byte(""))
+}
+
+func DashboardHandler(w http.ResponseWriter, r *http.Request) {
+    session, _ := store.Get(r, "session.id")
+    if (session.Values["authenticated"] != nil) && session.Values["authenticated"] != false {
+        w.Write([]byte(time.Now().String()))
+    } else {
+        http.Error(w, "Forbidden", http.StatusForbidden)
+    }
+}
+*/
