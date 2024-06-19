@@ -256,17 +256,19 @@ func (controller *UserControllerImpl) LoginHandler(writer http.ResponseWriter, r
 		panic(err)
 	}
 
-    idValue := request.PostForm.Get("id")
-    id, err := strconv.Atoi(idValue)
+    name := request.PostForm.Get("Name")
     helper.PanicIfError(err)
 
-    userResponse := controller.UserService.FindById(request.Context(), id)
+    userResponse := controller.UserService.FindByName(request.Context(), name)
+    if(userResponse.Name == name){ 
     webResponse := web.WebResponse{
         Code:   200,                                                          Status: "OK",
         Data:   userResponse,
     }
 
+
     helper.WriteToResponseBody(writer, webResponse)
+    }
 }
 /*
 var store = sessions.NewCookieStore([]byte(os.Getenv("SESSION_SECRET")))

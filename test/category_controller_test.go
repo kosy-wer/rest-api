@@ -369,7 +369,7 @@ func TestLoginSuccess(t *testing.T) {
 
     router := setupRouter(db)
 
-    requestBody := strings.NewReader("id=" + strconv.Itoa(user.Id))
+    requestBody := strings.NewReader("Name=" + user.Name)
     request := httptest.NewRequest(http.MethodPost, "http://localhost:3000/api/login", requestBody)
     request.Header.Add("X-API-Key", "RAHASIA")
     request.Header.Add("Content-Type", "application/x-www-form-urlencoded")
@@ -388,6 +388,7 @@ func TestLoginSuccess(t *testing.T) {
     assert.Equal(t, "OK", responseBody["status"])
     assert.Equal(t, user.Id, int(responseBody["data"].(map[string]interface{})["id"].(float64)))
     assert.Equal(t, user.Name, responseBody["data"].(map[string]interface{})["name"])
+	fmt.Println(responseBody)
 }
 
 

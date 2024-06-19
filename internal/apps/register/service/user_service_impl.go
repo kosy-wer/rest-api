@@ -74,13 +74,24 @@ func (service *UserServiceImpl) Delete(ctx context.Context, userId int) {
 
     service.UserRepository.Delete(ctx, tx, user)
 }
-
 func (service *UserServiceImpl) FindById(ctx context.Context, userId int) web.UserResponse {
     tx, err := service.DB.Begin()
     helper.PanicIfError(err)
     defer helper.CommitOrRollback(tx)
 
     user, err := service.UserRepository.FindById(ctx, tx, userId)
+    if err != nil {
+        panic(exception.NewNotFoundError(err.Error()))              }                                                           
+    return helper.ToUserResponse(user)
+}
+
+
+func (service *UserServiceImpl) FindByName(ctx context.Context, userName string) web.UserResponse {
+    tx, err := service.DB.Begin()
+    helper.PanicIfError(err)
+    defer helper.CommitOrRollback(tx)
+
+    user, err := service.UserRepository.FindByName(ctx, tx, userName)
     if err != nil {
         panic(exception.NewNotFoundError(err.Error()))
     }

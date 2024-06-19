@@ -49,6 +49,20 @@ func (repository *UserRepositoryImpl) FindById(ctx context.Context, tx *sql.Tx, 
     return user, nil
 }
 
+func (repository *UserRepositoryImpl) FindByName(ctx context.Context, tx *sql.Tx, userName string) (domain.User, error) {
+    SQL := "SELECT id, name FROM users WHERE name = $1"
+    row := tx.QueryRowContext(ctx, SQL, userName)
+    user := domain.User{}
+    err := row.Scan(&user.Id, &user.Name)
+    if err != nil {
+        if errors.Is(err, sql.ErrNoRows) {
+            return user, errors.New("user is not found")
+        }                                                                                                                    
+	return user, err
+    }
+    return user, nil
+}
+
 func (repository *UserRepositoryImpl) FindAll(ctx context.Context, tx *sql.Tx) []domain.User {
     SQL := "SELECT id, name FROM users"
     rows, err := tx.QueryContext(ctx, SQL)
