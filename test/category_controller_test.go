@@ -279,7 +279,7 @@ func TestDeleteCategorySuccess(t *testing.T) {
 func TestDeleteCategoryFailed(t *testing.T) {	
 
 	db , err := database.GetConnection()
-                                                                                      if err != nil {                                                                  panic(err)                                                                 }
+                                                                              if err != nil {                                                                  panic(err)                                                 }
 	truncateUser(db)
 	router := setupRouter(db)
 
@@ -388,7 +388,39 @@ func TestLoginSuccess(t *testing.T) {
     assert.Equal(t, "OK", responseBody["status"])
     assert.Equal(t, user.Id, int(responseBody["data"].(map[string]interface{})["id"].(float64)))
     assert.Equal(t, user.Name, responseBody["data"].(map[string]interface{})["name"])
-	fmt.Println(responseBody)
+}
+
+func TestLoginFailed(t *testing.T) {
+	fmt.Println("start test login failed")
+    db, err := database.GetConnection()
+    if err != nil {
+        panic(err)
+    }
+
+    truncateUser(db)
+
+
+    router := setupRouter(db)
+
+    requestBody := strings.NewReader("Name = fail")
+    request := httptest.NewRequest(http.MethodPost, "http://localhost:3000/api/login", requestBody)
+    request.Header.Add("X-API-Key", "RAHASIA")
+    request.Header.Add("Content-Type", "application/x-www-form-urlencoded")
+
+    recorder := httptest.NewRecorder()
+    router.ServeHTTP(recorder, request)
+
+    response := recorder.Result()
+    assert.Equal(t, 404, response.StatusCode)
+
+    body, _ := io.ReadAll(response.Body)                             
+    var responseBody map[string]interface{}
+    json.Unmarshal(body, &responseBody)
+    assert.Equal(t, 404, int(responseBody["code"].(float64)))  
+    assert.Equal(t, "NOT FOUND", responseBody["status"])
+    assert.Equal(t, "user is not found", responseBody["data"])
+	fmt.Println("end test login failed")
+
 }
 
 
