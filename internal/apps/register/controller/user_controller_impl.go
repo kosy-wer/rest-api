@@ -262,7 +262,8 @@ func (controller *UserControllerImpl) LoginHandler(writer http.ResponseWriter, r
     userResponse := controller.UserService.FindByName(request.Context(), name)
     if(userResponse.Name == name){ 
     webResponse := web.WebResponse{
-        Code:   200,                                                          Status: "OK",
+        Code:   200,
+	Status: "OK",
         Data:   userResponse,
     }
 

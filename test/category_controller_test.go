@@ -419,6 +419,7 @@ func TestLoginFailed(t *testing.T) {
     assert.Equal(t, 404, int(responseBody["code"].(float64)))  
     assert.Equal(t, "NOT FOUND", responseBody["status"])
     assert.Equal(t, "user is not found", responseBody["data"])
+	fmt.Println(responseBody["data"])
 	fmt.Println("end test login failed")
 
 }
