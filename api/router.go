@@ -14,11 +14,13 @@ func NewRouter(userController controller.UserController) *httprouter.Router {
     router.GET("/api/users", userController.FindAll)
     router.POST("/api/users", userController.Create)
     router.PUT("/api/users/:userId", userController.Update)
-    router.GET("/api/users/:userId", userController.FindById)
+    router.GET("/api/users/:userId", userController.FindByEmail)
     router.DELETE("/api/users/:userId", userController.Delete)
 
     router.POST("/api/login", userController.LoginHandler)
     /* Login and Logout routes
+    router.POST("/api/google/login", userController.LoginHandler)
+    router.POST("/api/google/callback", userController.LoginHandler)
     router.POST("/api/logout", controller.LogoutHandler)
     */
 

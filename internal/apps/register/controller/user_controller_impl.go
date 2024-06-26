@@ -2,13 +2,10 @@ package controller
 
 import (
     "github.com/julienschmidt/httprouter"
-    //"github.com/gorilla/sessions"
-    //"os"
     "net/http"
     "rest_api/internal/apps/register/helper"
     "rest_api/internal/apps/register/model/web"
     "rest_api/internal/apps/register/service"
-    "strconv"
 )
 
 // UserControllerImpl represents the implementation of the UserController interface
@@ -69,7 +66,7 @@ func (controller *UserControllerImpl) Create(writer http.ResponseWriter, request
 }
 
 // Update an existing user
-// swagger:operation PUT /api/users/{userId} users updateUser
+// swagger:operation PUT /api/users/{userEmail} users updateUser
 //
 // ---
 // summary: Update an existing user
@@ -80,11 +77,11 @@ func (controller *UserControllerImpl) Create(writer http.ResponseWriter, request
 //   description: API key for authorization
 //   required: true
 //   type: string
-// - name: userId
+// - name: userEmail
 //   in: path
-//   description: The ID of the user to update
+//   description: The email of the user to update
 //   required: true
-//   type: integer
+//   type: string
 // - name: body
 //   in: body
 //   description: The updated user object
@@ -112,11 +109,8 @@ func (controller *UserControllerImpl) Update(writer http.ResponseWriter, request
     userUpdateRequest := web.UserUpdateRequest{}
     helper.ReadFromRequestBody(request, &userUpdateRequest)
 
-    userId := params.ByName("userId")
-    id, err := strconv.Atoi(userId)
-    helper.PanicIfError(err)
-
-    userUpdateRequest.Id = id
+    userEmail := params.ByName("userEmail")
+    userUpdateRequest.Email = userEmail
 
     userResponse := controller.UserService.Update(request.Context(), userUpdateRequest)
     webResponse := web.WebResponse{
@@ -129,7 +123,7 @@ func (controller *UserControllerImpl) Update(writer http.ResponseWriter, request
 }
 
 // Delete an existing user
-// swagger:operation DELETE /api/users/{userId} users deleteUser
+// swagger:operation DELETE /api/users/{userEmail} users deleteUser
 //
 // ---
 // summary: Delete an existing user
@@ -140,11 +134,11 @@ func (controller *UserControllerImpl) Update(writer http.ResponseWriter, request
 //   description: API key for authorization
 //   required: true
 //   type: string
-// - name: userId
+// - name: userEmail
 //   in: path
-//   description: ID of the user to delete
+//   description: Email of the user to delete
 //   required: true
-//   type: integer
+//   type: string
 // responses:
 //   '200':
 //     description: Successfully deleted user.
@@ -159,11 +153,9 @@ func (controller *UserControllerImpl) Update(writer http.ResponseWriter, request
 //     schema:
 //       "$ref": "#/responses/errorResponse"
 func (controller *UserControllerImpl) Delete(writer http.ResponseWriter, request *http.Request, params httprouter.Params) {
-    userId := params.ByName("userId")
-    id, err := strconv.Atoi(userId)
-    helper.PanicIfError(err)
+    userEmail := params.ByName("userEmail")
 
-    controller.UserService.Delete(request.Context(), id)
+    controller.UserService.Delete(request.Context(), userEmail)
     webResponse := web.WebResponse{
         Code:   200,
         Status: "OK",
@@ -172,23 +164,23 @@ func (controller *UserControllerImpl) Delete(writer http.ResponseWriter, request
     helper.WriteToResponseBody(writer, webResponse)
 }
 
-// Find a user by ID
-// swagger:operation GET /api/users/{userId} users getUser
+// Find a user by Email
+// swagger:operation GET /api/users/{userEmail} users getUser
 //
 // ---
-// summary: Find a user by ID
-// description: Retrieves a user by its ID.
+// summary: Find a user by email
+// description: Retrieves a user by its email.
 // parameters:
 // - name: X-API-Key
 //   in: header
 //   description: API key for authorization
 //   required: true
 //   type: string
-// - name: userId
+// - name: userEmail
 //   in: path
-//   description: ID of the user to retrieve
+//   description: Email of the user to retrieve
 //   required: true
-//   type: integer
+//   type: string
 // responses:
 //   '200':
 //     description: Successfully retrieved user.
@@ -202,12 +194,10 @@ func (controller *UserControllerImpl) Delete(writer http.ResponseWriter, request
 //     description: Internal server error.
 //     schema:
 //       "$ref": "#/responses/errorResponse"
-func (controller *UserControllerImpl) FindById(writer http.ResponseWriter, request *http.Request, params httprouter.Params) {
-    userId := params.ByName("userId")
-    id, err := strconv.Atoi(userId)
-    helper.PanicIfError(err)
+func (controller *UserControllerImpl) FindByEmail(writer http.ResponseWriter, request *http.Request, params httprouter.Params) {
+    userEmail := params.ByName("userEmail")
 
-    userResponse := controller.UserService.FindById(request.Context(), id)
+    userResponse := controller.UserService.FindByEmail(request.Context(), userEmail)
     webResponse := web.WebResponse{
         Code:   200,
         Status: "OK",
@@ -249,43 +239,59 @@ func (controller *UserControllerImpl) FindAll(writer http.ResponseWriter, reques
     helper.WriteToResponseBody(writer, webResponse)
 }
 
-
+// LoginHandler handles user login
+// swagger:operation POST /api/login users loginUser
+//
+// ---
+// summary: Authenticate a user
+// description: Authenticates a user and returns user information.
+// parameters:
+// - name: X-API-Key
+//   in: header
+//   description: API key for authorization
+//   required: true
+//   type: string
+// - name: body
+//   in: body
+//   description: User credentials for login.
+//   required: true
+//   schema:
+//     "$ref": "#/definitions/LoginRequest"
+// responses:
+//   '200':
+//     description: Successfully authenticated.
+//     schema:
+//       "$ref": "#/responses/webResponse"
+//   '400':
+//     description: Invalid request payload.
+//     schema:
+//       "$ref": "#/responses/errorResponse"
+//   '401':
+//     description: Unauthorized access.
+//     schema:
+//       "$ref": "#/responses/errorResponse"
+//   '500':
+//     description: Internal server error.
+//     schema:
+//       "$ref": "#/responses/errorResponse"
 func (controller *UserControllerImpl) LoginHandler(writer http.ResponseWriter, request *http.Request, params httprouter.Params) {
-	err := request.ParseForm()
-	if err != nil {
-		panic(err)
-	}
+    err := request.ParseForm()
+    if err != nil {
+        panic(err)
+    }
 
     name := request.PostForm.Get("Name")
     helper.PanicIfError(err)
 
     userResponse := controller.UserService.FindByName(request.Context(), name)
-    if(userResponse.Name == name){ 
-    webResponse := web.WebResponse{
-        Code:   200,
-	Status: "OK",
-        Data:   userResponse,
-    }
+    if userResponse.Name == name {
+        webResponse := web.WebResponse{
+            Code:   200,
+            Status: "OK",
+            Data:   userResponse,
+        }
 
-
-    helper.WriteToResponseBody(writer, webResponse)
-    }
-}
-/*
-var store = sessions.NewCookieStore([]byte(os.Getenv("SESSION_SECRET")))
-func LogoutHandler(w http.ResponseWriter, r *http.Request) {
-    session, _ := store.Get(r, "session.id")
-    session.Values["authenticated"] = false
-    session.Save(r, w)
-    w.Write([]byte(""))
-}
-
-func DashboardHandler(w http.ResponseWriter, r *http.Request) {
-    session, _ := store.Get(r, "session.id")
-    if (session.Values["authenticated"] != nil) && session.Values["authenticated"] != false {
-        w.Write([]byte(time.Now().String()))
-    } else {
-        http.Error(w, "Forbidden", http.StatusForbidden)
+        helper.WriteToResponseBody(writer, webResponse)
     }
 }
-*/
+

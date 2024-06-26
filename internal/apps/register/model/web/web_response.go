@@ -12,6 +12,6 @@ type WebResponse struct {
     Status string `json:"status"`
 
     // The data payload of the response
-    // example: {"id": "12345", "name": "John Doe"}
+    // example: {"email": "john@gmail.com", "name": "John Doe"}
     Data interface{} `json:"data"`
 }

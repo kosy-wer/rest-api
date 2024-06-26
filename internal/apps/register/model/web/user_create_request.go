@@ -1,11 +1,14 @@
 package web
 
-// UserCreateRequest represents the request payload for creating a user
+// UserCreateRequest represents the request payload for updating a user
 // swagger:model
 type UserCreateRequest struct {
-    // Name of the user
+    // Email of the user
+    // required: true
+    Email string `validate:"required,email" json:"email"`
+    // Updated name of the user
     // required: true
     // min length: 1
-    // max length: 100
-    Name string `validate:"required,min=1,max=100" json:"name"`
+    // max length: 200
+    Name string `validate:"required,max=200,min=1" json:"name"`
 }

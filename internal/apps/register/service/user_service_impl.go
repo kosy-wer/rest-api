@@ -34,7 +34,8 @@ func (service *UserServiceImpl) Create(ctx context.Context, request web.UserCrea
     defer helper.CommitOrRollback(tx)
 
     user := domain.User{
-        Name: request.Name,
+        Name:  request.Name,
+        Email: request.Email,
     }
 
     user = service.UserRepository.Save(ctx, tx, user)
@@ -50,7 +51,7 @@ func (service *UserServiceImpl) Update(ctx context.Context, request web.UserUpda
     helper.PanicIfError(err)
     defer helper.CommitOrRollback(tx)
 
-    user, err := service.UserRepository.FindById(ctx, tx, request.Id)
+    user, err := service.UserRepository.FindByEmail(ctx, tx, request.Email)
     if err != nil {
         panic(exception.NewNotFoundError(err.Error()))
     }
@@ -62,29 +63,30 @@ func (service *UserServiceImpl) Update(ctx context.Context, request web.UserUpda
     return helper.ToUserResponse(user)
 }
 
-func (service *UserServiceImpl) Delete(ctx context.Context, userId int) {
+func (service *UserServiceImpl) Delete(ctx context.Context, userEmail string) {
     tx, err := service.DB.Begin()
     helper.PanicIfError(err)
     defer helper.CommitOrRollback(tx)
 
-    user, err := service.UserRepository.FindById(ctx, tx, userId)
+    user, err := service.UserRepository.FindByEmail(ctx, tx, userEmail)
     if err != nil {
         panic(exception.NewNotFoundError(err.Error()))
     }
 
     service.UserRepository.Delete(ctx, tx, user)
 }
-func (service *UserServiceImpl) FindById(ctx context.Context, userId int) web.UserResponse {
+
+func (service *UserServiceImpl) FindByEmail(ctx context.Context, userEmail string) web.UserResponse {
     tx, err := service.DB.Begin()
     helper.PanicIfError(err)
     defer helper.CommitOrRollback(tx)
 
-    user, err := service.UserRepository.FindById(ctx, tx, userId)
+    user, err := service.UserRepository.FindByEmail(ctx, tx, userEmail)
     if err != nil {
-        panic(exception.NewNotFoundError(err.Error()))              }                                                           
+        panic(exception.NewNotFoundError(err.Error()))
+    }
     return helper.ToUserResponse(user)
 }
-
 
 func (service *UserServiceImpl) FindByName(ctx context.Context, userName string) web.UserResponse {
     tx, err := service.DB.Begin()

@@ -6,8 +6,8 @@ import (
 )
 
 type UserService interface {
-    Delete(ctx context.Context, userId int)
-    FindById(ctx context.Context, userId int) web.UserResponse
+    Delete(ctx context.Context, userEmail string)
+    FindByEmail(ctx context.Context, userEmail string) web.UserResponse
     FindByName(ctx context.Context, userName string) web.UserResponse
     Create(ctx context.Context, request web.UserCreateRequest) web.UserResponse
     FindAll(ctx context.Context) []web.UserResponse
