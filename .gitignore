@@ -22,5 +22,4 @@
 
 #enviroment application
 
-configs/config.env
-.config.env.swp
+configs/
