@@ -1,6 +1,60 @@
 {
   "swagger": "2.0",
   "paths": {
+    "/api/login": {
+      "post": {
+        "description": "Authenticates a user and returns user information.",
+        "tags": [
+          "users"
+        ],
+        "summary": "Authenticate a user",
+        "operationId": "loginUser",
+        "parameters": [
+          {
+            "type": "string",
+            "description": "API key for authorization",
+            "name": "X-API-Key",
+            "in": "header",
+            "required": true
+          },
+          {
+            "description": "User credentials for login.",
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/UserUpdateRequest"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully authenticated.",
+            "schema": {
+              "$ref": "#/responses/webResponse"
+            }
+          },
+          "400": {
+            "description": "Invalid request payload.",
+            "schema": {
+              "$ref": "#/responses/errorResponse"
+            }
+          },
+          "401": {
+            "description": "Unauthorized access.",
+            "schema": {
+              "$ref": "#/responses/errorResponse"
+            }
+          },
+          "500": {
+            "description": "Internal server error.",
+            "schema": {
+              "$ref": "#/responses/errorResponse"
+            }
+          }
+        }
+      }
+    },
     "/api/users": {
       "get": {
         "description": "Retrieves all users.",
@@ -80,13 +134,13 @@
         }
       }
     },
-    "/api/users/{userId}": {
+    "/api/users/{userEmail}": {
       "get": {
-        "description": "Retrieves a user by its ID.",
+        "description": "Retrieves a user by its email.",
         "tags": [
           "users"
         ],
-        "summary": "Find a user by ID",
+        "summary": "Find a user by email",
         "operationId": "getUser",
         "parameters": [
           {
@@ -97,9 +151,9 @@
             "required": true
           },
           {
-            "type": "integer",
-            "description": "ID of the user to retrieve",
-            "name": "userId",
+            "type": "string",
+            "description": "Email of the user to retrieve",
+            "name": "userEmail",
             "in": "path",
             "required": true
           }
@@ -141,9 +195,9 @@
             "required": true
           },
           {
-            "type": "integer",
-            "description": "The ID of the user to update",
-            "name": "userId",
+            "type": "string",
+            "description": "The email of the user to update",
+            "name": "userEmail",
             "in": "path",
             "required": true
           },
@@ -200,9 +254,9 @@
             "required": true
           },
           {
-            "type": "integer",
-            "description": "ID of the user to delete",
-            "name": "userId",
+            "type": "string",
+            "description": "Email of the user to delete",
+            "name": "userEmail",
             "in": "path",
             "required": true
           }
@@ -232,16 +286,22 @@
   },
   "definitions": {
     "UserCreateRequest": {
-      "description": "UserCreateRequest represents the request payload for creating a user",
+      "description": "UserCreateRequest represents the request payload for updating a user",
       "type": "object",
       "required": [
+        "email",
         "name"
       ],
       "properties": {
-        "name": {
-          "description": "Name of the user",
+        "email": {
+          "description": "Email of the user",
           "type": "string",
-          "maxLength": 100,
+          "x-go-name": "Email"
+        },
+        "name": {
+          "description": "Updated name of the user",
+          "type": "string",
+          "maxLength": 200,
           "minLength": 1,
           "x-go-name": "Name"
         }
@@ -252,15 +312,14 @@
       "description": "UserUpdateRequest represents the request payload for updating a user",
       "type": "object",
       "required": [
-        "id",
+        "email",
         "name"
       ],
       "properties": {
-        "id": {
-          "description": "ID of the user",
-          "type": "integer",
-          "format": "int64",
-          "x-go-name": "Id"
+        "email": {
+          "description": "Email of the user",
+          "type": "string",
+          "x-go-name": "Email"
         },
         "name": {
           "description": "Updated name of the user",
@@ -314,7 +373,7 @@
           "description": "The HTTP status code"
         },
         "data": {
-          "example": "{\"id\": \"12345\", \"name\": \"John Doe\"}",
+          "example": "{\"email\": \"john@gmail.com\", \"name\": \"John Doe\"}",
           "description": "The data payload of the response"
         },
         "status": {

@@ -256,7 +256,7 @@ func (controller *UserControllerImpl) FindAll(writer http.ResponseWriter, reques
 //   description: User credentials for login.
 //   required: true
 //   schema:
-//     "$ref": "#/definitions/LoginRequest"
+//     "$ref": "#/definitions/UserUpdateRequest"
 // responses:
 //   '200':
 //     description: Successfully authenticated.
