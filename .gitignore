@@ -21,4 +21,4 @@
 # vendor/
 
 #enviroment application
-.env
+/storage/emulated/0/rest_api/configs
