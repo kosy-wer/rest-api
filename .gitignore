@@ -21,4 +21,6 @@
 # vendor/
 
 #enviroment application
-/storage/emulated/0/rest_api/configs
+
+configs/config.env
+.config.env.swp
