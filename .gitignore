@@ -23,3 +23,9 @@
 #enviroment application
 
 configs/
+
+#file chaced
+*.swp
+*.swo
+
+
