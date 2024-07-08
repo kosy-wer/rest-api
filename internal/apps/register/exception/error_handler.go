@@ -1,10 +1,11 @@
 package exception
 
 import (
-	"github.com/go-playground/validator/v10"
 	"net/http"
 	"rest_api/internal/apps/register/helper"
 	"rest_api/internal/apps/register/model/web"
+
+	"github.com/go-playground/validator/v10"
 )
 
 func ErrorHandler(writer http.ResponseWriter, request *http.Request, err interface{}) {
@@ -34,7 +35,7 @@ func validationErrors(writer http.ResponseWriter, request *http.Request, err int
 
 		helper.WriteToResponseBody(writer, webResponse)
 		return true
-	}else{
+	} else {
 		return false
 	}
 }
