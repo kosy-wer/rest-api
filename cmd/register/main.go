@@ -47,10 +47,10 @@ func main() {
 	// Inisialisasi konfigurasi
 
 	// Verifikasi bahwa konfigurasi telah diinisialisasi dengan benar
-	log.Printf("Google Client ID: %s", load.AppConfig.GoogleClientID)
-	log.Printf("Google Client Secret: %s", load.AppConfig.GoogleClientSecret)
+	log.Printf("start server")
 
 	//
 	err = server.ListenAndServe()
 	helper.PanicIfError(err)
+	log.Printf("start server")
 }

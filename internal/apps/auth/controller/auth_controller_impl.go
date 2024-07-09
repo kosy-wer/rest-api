@@ -40,12 +40,11 @@ func (a *AuthControllerImpl) GoogleCallback(w http.ResponseWriter, r *http.Reque
 		return
 	}
 
-	user, err := a.AuthService.GetUserInfo(context.Background(), token)
+	userResponse, err := a.AuthService.RegisterUser(context.Background(), token)
 	if err != nil {
-		http.Error(w, "Failed to get user info", http.StatusInternalServerError)
+		http.Error(w, "Failed to register user", http.StatusInternalServerError)
 		return
 	}
 
-	w.Write([]byte("User email: " + user.Email + "\nUser name: " + user.Name))
-
+	w.Write([]byte("User email: " + userResponse.Email + "\nUser name: " + userResponse.Name))
 }
