@@ -7,6 +7,10 @@ import (
 	authController "rest_api/internal/apps/auth/controller"
 	"rest_api/internal/apps/auth/load"
 	authService "rest_api/internal/apps/auth/service"
+
+	emailConfig "rest_api/internal/apps/email/config"
+	emailService "rest_api/internal/apps/email/service"
+
 	"rest_api/internal/apps/database"
 
 	//"rest_api/internal/apps/register/middleware"
@@ -37,6 +41,23 @@ func main() {
 	authService := authService.NewAuthService(load.AppConfig, userService)
 	authController := authController.NewAuthController(authService)
 
+	emailCon, err := emailConfig.InitEmailConfig()
+	if err != nil {
+		log.Fatalf("Failed to load email config: %v", err)
+	}
+
+	// Inisialisasi EmailService
+	emailService := emailService.NewEmailService(emailCon)
+
+	// Contoh penggunaan pengiriman email
+	to := "protectorunmatched@gmail.com"
+	subject := "test subject"
+	body := "This you"
+
+	err = emailService.SendEmail(to, subject, body)
+	if err != nil {
+		log.Fatalf("Failed to send email: %v", err)
+	}
 	router := api.NewRouter(userController, authController)
 	server := http.Server{
 		Addr:    "localhost:8080",

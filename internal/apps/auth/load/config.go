@@ -17,7 +17,7 @@ type Config struct {
 var AppConfig *Config
 
 func InitConfig() {
-	viper.SetConfigFile("configs/config.env")
+	viper.SetConfigFile("configs/googleOauth.env")
 	viper.AutomaticEnv()
 
 	if err := viper.ReadInConfig(); err != nil {
