@@ -5,6 +5,7 @@ import (
 	"encoding/json"
 	"rest_api/internal/apps/auth/load"
 
+	"rest_api/internal/apps/register/helper"
 	//"rest_api/internal/apps/register/model/domain"
 	"rest_api/internal/apps/register/model/web"
 	user "rest_api/internal/apps/register/service"
@@ -52,9 +53,8 @@ func (a *AuthServiceImpl) GetUserInfo(ctx context.Context, token *oauth2.Token) 
 
 func (a *AuthServiceImpl) RegisterUser(ctx context.Context, token *oauth2.Token) (web.UserResponse, error) {
 	userCreateRequest, err := a.GetUserInfo(ctx, token)
-	if err != nil {
-		return web.UserResponse{}, err
-	}
+
+	helper.PanicIfError(err)
 
 	userResponse := a.UserService.Create(ctx, *userCreateRequest)
 	return userResponse, nil
