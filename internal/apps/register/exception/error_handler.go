@@ -68,6 +68,5 @@ func internalServerError(writer http.ResponseWriter, request *http.Request, err 
 		Status: "INTERNAL SERVER ERROR",
 		Data:   err,
 	}
-
 	helper.WriteToResponseBody(writer, webResponse)
 }

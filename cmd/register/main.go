@@ -8,8 +8,8 @@ import (
 	"rest_api/internal/apps/auth/load"
 	authService "rest_api/internal/apps/auth/service"
 
-	emailConfig "rest_api/internal/apps/email/config"
-	emailService "rest_api/internal/apps/email/service"
+	//emailConfig "rest_api/internal/apps/email/config"
+	//emailService "rest_api/internal/apps/email/service"
 
 	"rest_api/internal/apps/database"
 
@@ -36,12 +36,14 @@ func main() {
 	userService := service.NewUserService(userRepository, db, validate)
 	userController := controller.NewUserController(userService)
 
-	load.InitConfig()
-
-	authService := authService.NewAuthService(load.AppConfig, userService)
+	config, err := load.InitConfig()
+	if err != nil {
+		log.Fatalf("Failed to load config: %v", err)
+	}
+	authService := authService.NewAuthService(config, userService)
 	authController := authController.NewAuthController(authService)
 
-	emailCon, err := emailConfig.InitEmailConfig()
+	/*emailCon, err := emailConfig.InitEmailConfig()
 	if err != nil {
 		log.Fatalf("Failed to load email config: %v", err)
 	}
@@ -58,6 +60,7 @@ func main() {
 	if err != nil {
 		log.Fatalf("Failed to send email: %v", err)
 	}
+	*/
 	router := api.NewRouter(userController, authController)
 	server := http.Server{
 		Addr:    "localhost:8080",

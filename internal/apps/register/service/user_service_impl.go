@@ -111,3 +111,30 @@ func (service *UserServiceImpl) FindAll(ctx context.Context) []web.UserResponse 
 
 	return helper.ToUserResponses(users)
 }
+
+func (service *UserServiceImpl) Login(ctx context.Context, request web.UserLoginRequest) web.UserResponse {
+	err := service.Validate.Struct(request)
+	helper.PanicIfError(err)
+
+	tx, err := service.DB.Begin()
+	helper.PanicIfError(err)
+	defer helper.CommitOrRollback(tx)
+
+	exist, err := service.UserRepository.UserExist(ctx, tx, request.Email)
+	if err != nil {
+		panic(exception.NewNotFoundError(err.Error()))
+	}
+
+	if exist {
+		panic(exception.NewNotFoundError("user exist"))
+	}
+
+	user := domain.User{
+		Name:  request.Name,
+		Email: request.Email,
+	}
+
+	user = service.UserRepository.Save(ctx, tx, user)
+
+	return helper.ToUserResponse(user)
+}

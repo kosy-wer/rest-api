@@ -15,9 +15,9 @@ func NewRouter(userController controller.UserController, authController auth.Aut
 	// User routes
 	router.GET("/api/users", userController.FindAll)
 	router.POST("/api/users", userController.Create)
-	router.PUT("/api/users/:userId", userController.Update)
-	router.GET("/api/users/:userId", userController.FindByEmail)
-	router.DELETE("/api/users/:userId", userController.Delete)
+	router.PUT("/api/users/:userEmail", userController.Update)
+	router.GET("/api/users/:userEmail", userController.FindByEmail)
+	router.DELETE("/api/users/:userEmail", userController.Delete)
 
 	router.POST("/api/login", userController.LoginHandler)
 	/* Login and Logout routes

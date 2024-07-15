@@ -6,6 +6,8 @@ import (
 	//"encoding/json"
 	"net/http"
 	"rest_api/internal/apps/auth/service"
+	"rest_api/internal/apps/register/helper"
+	"rest_api/internal/apps/register/model/web"
 
 	"github.com/julienschmidt/httprouter"
 )
@@ -34,17 +36,19 @@ func (a *AuthControllerImpl) GoogleCallback(w http.ResponseWriter, r *http.Reque
 	}
 
 	code := r.URL.Query().Get("code")
+
 	token, err := a.AuthService.Exchange(context.Background(), code)
-	if err != nil {
-		http.Error(w, "Failed to exchange code for token", http.StatusInternalServerError)
-		return
-	}
+	helper.PanicIfError(err)
 
 	userResponse, err := a.AuthService.RegisterUser(context.Background(), token)
-	if err != nil {
-		http.Error(w, "Failed to register user", http.StatusInternalServerError)
-		return
-	}
+	helper.PanicIfError(err)
+
+	webResponse := web.WebResponse{
+		Code:   200,
+		Status: "OK",
+		Data:   userResponse}
+
+	helper.WriteToResponseBody(w, webResponse)
 
 	w.Write([]byte("User email: " + userResponse.Email + "\nUser name: " + userResponse.Name))
 }

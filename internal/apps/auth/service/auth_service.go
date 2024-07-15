@@ -12,7 +12,6 @@ import (
 type AuthService interface {
 	AuthCodeURL(state string) string
 	Exchange(ctx context.Context, code string) (*oauth2.Token, error)
-	GetUserInfo(ctx context.Context, token *oauth2.Token) (*web.UserCreateRequest, error)
+	GetUserInfo(ctx context.Context, token *oauth2.Token) (*web.UserLoginRequest, error)
 	RegisterUser(ctx context.Context, token *oauth2.Token) (web.UserResponse, error)
-	//GetUserInfo(ctx context.Context, token *oauth2.Token) (map[string]interface{}, error)
 }
