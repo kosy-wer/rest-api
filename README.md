@@ -21,3 +21,59 @@ Compatibility Note:
 - It is not highly advanced or feature-rich.
 - Some features are not fully flexible and well-supported.
 - The project has not been thoroughly tested for various conditions.
+
+# User Management API
+
+This API provides functionalities for managing users, including creating, retrieving, updating, and deleting user data.
+
+## Base URL
+
+GET /users/{userEmail}http://localhost:8080/api
+
+## Endpoints
+
+### Get User by Email
+
+Retrieves a user by its email.
+
+#### Parameters
+
+| Name       | In     | Type   | Required | Description                |
+|------------|--------|--------|----------|----------------------------|
+| X-API-Key  | header | string | true     | API key for authorization  |
+| userEmail  | path   | string | true     | Email of the user to retrieve |
+
+#### Responses
+
+| Code | Description                      | Example Value               |
+|------|----------------------------------|-----------------------------|
+| 200  | Successfully retrieved user.     | `"string"`                  |
+| 404  | User not found.                  | `"string"`                  |
+| 500  | Internal server error.           | `"string"`                  |
+
+### Create a New User
+
+Creates a new user in the system.
+POST /users
+
+#### Parameters
+
+| Name       | In     | Type   | Required | Description                |
+|------------|--------|--------|----------|----------------------------|
+| X-API-Key  | header | string | true     | API key for authorization  |
+| body       | body   | object | true     | The user object to create. |
+
+#### UserCreateRequest Object
+
+| Field | Type   | Required | Description                |
+|-------|--------|----------|----------------------------|
+| email | string | true     | Email of the user          |
+| name  | string | true     | Updated name of the user   |
+
+#### Responses
+
+| Code | Description                      | Example Value               |
+|------|----------------------------------|-----------------------------|
+| 200  | Successfully created user.       | `"user details"`            |
+| 400  | Bad request.                     | `"error message"`           |
+| 500  | Internal server error.           | `"error message"`           |
