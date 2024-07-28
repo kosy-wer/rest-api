@@ -146,7 +146,7 @@ GET /users
 
 | Code | Description                      | Example Value               |
 |------|----------------------------------|-----------------------------|
-| 200  | Successfully retrieved all users.| `[{ "email": "user1@example.com", "name": "User One" }, { "email": "user2@example.com", "name": "User Two" }]` |
+| 200  | Successfully retrieved all users.| `"all user"`                |
 | 404  | No users found.                  | `"error message"`           |
 | 500  | Internal server error.           | `"error message"`           |
 
