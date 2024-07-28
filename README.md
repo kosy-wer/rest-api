@@ -43,14 +43,13 @@ Retrieves a user by its email.
 |------------|--------|--------|----------|----------------------------|
 | X-API-Key  | header | string | true     | API key for authorization  |
 | userEmail  | path   | string | true     | Email of the user to retrieve |
-
 #### Responses
 
 | Code | Description                      | Example Value               |
 |------|----------------------------------|-----------------------------|
-| 200  | Successfully retrieved user.     | `"string"`                  |
-| 404  | User not found.                  | `"string"`                  |
-| 500  | Internal server error.           | `"string"`                  |
+| 200  | <span style="background-color:#dff0d8;color:#3c763d;padding:5px;">Successfully retrieved user.</span>     | <span style="background-color:#f0f0f0;color:#333;padding:5px;">"string"</span>                  |
+| 404  | <span style="background-color:#f2dede;color:#a94442;padding:5px;">User not found.</span>                  | <span style="background-color:#f0f0f0;color:#333;padding:5px;">"string"</span>                  |
+| 500  | <span style="background-color:#fcf8e3;color:#8a6d3b;padding:5px;">Internal server error.</span>           | <span style="background-color:#f0f0f0;color:#333;padding:5px;">"string"</span>                  |
 
 ### Create a New User
 
@@ -125,9 +124,5 @@ DELETE /users/{userEmail}
 | 200  | Successfully deleted user.       | `"user details"`            |
 | 404  | User not found.                  | `"error message"`           |
 | 500  | Internal server error.           | `"error message"`           |
-
-## Swagger Documentation
-
-You can view the Swagger UI for detailed API documentation at:
 
 
