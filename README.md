@@ -28,9 +28,10 @@ This API provides functionalities for managing users, including creating, retrie
 
 ## Base URL
 
-GET /users/{userEmail}http://localhost:8080/api
+http://localhost:8080/api
 
 ## Endpoints
+GET /users/{userEmail}
 
 ### Get User by Email
 
@@ -54,6 +55,7 @@ Retrieves a user by its email.
 ### Create a New User
 
 Creates a new user in the system.
+
 POST /users
 
 #### Parameters
@@ -77,3 +79,55 @@ POST /users
 | 200  | Successfully created user.       | `"user details"`            |
 | 400  | Bad request.                     | `"error message"`           |
 | 500  | Internal server error.           | `"error message"`           |
+
+### Update User
+
+Updates an existing user.
+
+PUT /users/{userEmail}
+
+
+#### Parameters
+
+| Name       | In     | Type   | Required | Description                |
+|------------|--------|--------|----------|----------------------------|
+| X-API-Key  | header | string | true     | API key for authorization  |
+| userEmail  | path   | string | true     | Email of the user to update |
+| body       | body   | object | true     | The user object to update. |
+
+#### Responses
+
+| Code | Description                      | Example Value               |
+|------|----------------------------------|-----------------------------|
+| 200  | Successfully updated user.       | `"user details"`            |
+| 400  | Bad request.                     | `"error message"`           |
+| 404  | User not found.                  | `"error message"`           |
+| 500  | Internal server error.           | `"error message"`           |
+
+### Delete User
+
+Deletes an existing user.
+
+DELETE /users/{userEmail}
+
+
+#### Parameters
+
+| Name       | In     | Type   | Required | Description                |
+|------------|--------|--------|----------|----------------------------|
+| X-API-Key  | header | string | true     | API key for authorization  |
+| userEmail  | path   | string | true     | Email of the user to delete |
+
+#### Responses
+
+| Code | Description                      | Example Value               |
+|------|----------------------------------|-----------------------------|
+| 200  | Successfully deleted user.       | `"user details"`            |
+| 404  | User not found.                  | `"error message"`           |
+| 500  | Internal server error.           | `"error message"`           |
+
+## Swagger Documentation
+
+You can view the Swagger UI for detailed API documentation at:
+
+
