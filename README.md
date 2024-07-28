@@ -37,19 +37,39 @@ GET /users/{userEmail}
 
 Retrieves a user by its email.
 
+
 #### Parameters
 
 | Name       | In     | Type   | Required | Description                |
 |------------|--------|--------|----------|----------------------------|
 | X-API-Key  | header | string | true     | API key for authorization  |
 | userEmail  | path   | string | true     | Email of the user to retrieve |
+
 #### Responses
 
-| Code | Description                      | Example Value               |
-|------|----------------------------------|-----------------------------|
-| 200  | <span style="background-color:#dff0d8;color:#3c763d;padding:5px;">Successfully retrieved user.</span>     | <span style="background-color:#f0f0f0;color:#333;padding:5px;">"string"</span>                  |
-| 404  | <span style="background-color:#f2dede;color:#a94442;padding:5px;">User not found.</span>                  | <span style="background-color:#f0f0f0;color:#333;padding:5px;">"string"</span>                  |
-| 500  | <span style="background-color:#fcf8e3;color:#8a6d3b;padding:5px;">Internal server error.</span>           | <span style="background-color:#f0f0f0;color:#333;padding:5px;">"string"</span>                  |
+<table>
+  <tr style="background-color: #30333a; color: yellow;">
+    <th>Code</th>
+    <th>Description</th>
+    <th>Example Value</th>
+  </tr>
+  <tr style="background-color: #f0f0f0;">
+    <td>200</td>
+    <td>Successfully retrieved user.</td>
+    <td>"string"</td>
+  </tr>
+  <tr style="background-color: #f0f0f0;">
+    <td>404</td>
+    <td>User not found.</td>
+    <td>"string"</td>
+  </tr>
+  <tr style="background-color: #f0f0f0;">
+    <td>500</td>
+    <td>Internal server error.</td>
+    <td>"string"</td>
+  </tr>
+</table>
+
 
 ### Create a New User
 
