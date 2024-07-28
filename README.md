@@ -37,7 +37,6 @@ GET /users/{userEmail}
 
 Retrieves a user by its email.
 
-
 #### Parameters
 
 | Name       | In     | Type   | Required | Description                |
@@ -47,29 +46,11 @@ Retrieves a user by its email.
 
 #### Responses
 
-<table>
-  <tr style="background-color: #30333a; color: yellow;">
-    <th>Code</th>
-    <th>Description</th>
-    <th>Example Value</th>
-  </tr>
-  <tr style="background-color: #30333a;">
-    <td>200</td>
-    <td>Successfully retrieved user.</td>
-    <td>"string"</td>
-  </tr>
-  <tr style="background-color: #f0f0f0;">
-    <td>404</td>
-    <td>User not found.</td>
-    <td>"string"</td>
-  </tr>
-  <tr style="background-color: #f0f0f0;">
-    <td>500</td>
-    <td>Internal server error.</td>
-    <td>"string"</td>
-  </tr>
-</table>
-
+| Code | Description                      | Example Value               |
+|------|----------------------------------|-----------------------------|
+| 200  | Successfully retrieved user.     | `"string"`                  |
+| 404  | User not found.                  | `"string"`                  |
+| 500  | Internal server error.           | `"string"`                  |
 
 ### Create a New User
 
@@ -145,4 +126,71 @@ DELETE /users/{userEmail}
 | 404  | User not found.                  | `"error message"`           |
 | 500  | Internal server error.           | `"error message"`           |
 
+# Tables with Custom Background
+
+Tables aren't part of the core Markdown spec, but they are part of GFM and Markdown Here supports them. They are an easy way of adding tables to your email -- a task that would otherwise require copy-pasting from another application.
+
+Colons can be used to align columns.
+
+<style>
+  table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+  th, td {
+    border: 1px solid white;
+    padding: 8px;
+  }
+  th {
+    background-color: black;
+    color: white;
+  }
+  td {
+    background-color: black;
+    color: white;
+  }
+</style>
+
+<table>
+  <tr>
+    <th>Tables</th>
+    <th>Are</th>
+    <th>Cool</th>
+  </tr>
+  <tr>
+    <td>col 3 is</td>
+    <td>right-aligned</td>
+    <td>$1600</td>
+  </tr>
+  <tr>
+    <td>col 2 is</td>
+    <td>centered</td>
+    <td>$12</td>
+  </tr>
+  <tr>
+    <td>zebra stripes</td>
+    <td>are neat</td>
+    <td>$1</td>
+  </tr>
+</table>
+
+There must be at least 3 dashes separating each header cell. The outer pipes (|) are optional, and you don't need to make the raw Markdown line up prettily. You can also use inline Markdown.
+
+<table>
+  <tr>
+    <th>Markdown</th>
+    <th>Less</th>
+    <th>Pretty</th>
+  </tr>
+  <tr>
+    <td>*Still*</td>
+    <td>`renders`</td>
+    <td>**nicely**</td>
+  </tr>
+  <tr>
+    <td>1</td>
+    <td>2</td>
+    <td>3</td>
+  </tr>
+</table>
 
