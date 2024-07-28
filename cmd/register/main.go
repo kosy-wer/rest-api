@@ -63,7 +63,7 @@ func main() {
 	*/
 	router := api.NewRouter(userController, authController)
 	server := http.Server{
-		Addr:    "localhost:8080",
+		Addr:    "localhost:3000",
 		Handler: router,
 		//Handler: middleware.NewAuthMiddleware(router),
 	}
