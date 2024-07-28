@@ -53,7 +53,7 @@ Retrieves a user by its email.
     <th>Description</th>
     <th>Example Value</th>
   </tr>
-  <tr style="background-color: #f0f0f0;">
+  <tr style="background-color: #30333a;">
     <td>200</td>
     <td>Successfully retrieved user.</td>
     <td>"string"</td>
