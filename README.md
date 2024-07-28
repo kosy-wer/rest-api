@@ -1,7 +1,6 @@
 # Rest-api - Simple Go REST Client 
+![Version](https://img.shields.io/badge/version-1.0.0-%2330333a)
 
-![](https://img.shields.io/nuget/dt/RestSharp) 
-[![](https://img.shields.io/nuget/v/RestSharp)](https://www.nuget.org/packages/RestSharp)
 
 
 rest-api is my first project using Golang. It provides CRUD features for sending emails and several other functionalities.
