@@ -1,0 +1,387 @@
+{
+  "swagger": "2.0",
+  "paths": {
+    "/api/login": {
+      "post": {
+        "description": "Authenticates a user and returns user information.",
+        "tags": [
+          "users"
+        ],
+        "summary": "Authenticate a user",
+        "operationId": "loginUser",
+        "parameters": [
+          {
+            "type": "string",
+            "description": "API key for authorization",
+            "name": "X-API-Key",
+            "in": "header",
+            "required": true
+          },
+          {
+            "description": "User credentials for login.",
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/UserUpdateRequest"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully authenticated.",
+            "schema": {
+              "$ref": "#/responses/webResponse"
+            }
+          },
+          "400": {
+            "description": "Invalid request payload.",
+            "schema": {
+              "$ref": "#/responses/errorResponse"
+            }
+          },
+          "401": {
+            "description": "Unauthorized access.",
+            "schema": {
+              "$ref": "#/responses/errorResponse"
+            }
+          },
+          "500": {
+            "description": "Internal server error.",
+            "schema": {
+              "$ref": "#/responses/errorResponse"
+            }
+          }
+        }
+      }
+    },
+    "/api/users": {
+      "get": {
+        "description": "Retrieves all users.",
+        "tags": [
+          "users"
+        ],
+        "summary": "Find all users",
+        "operationId": "listUsers",
+        "parameters": [
+          {
+            "type": "string",
+            "description": "API key for authorization",
+            "name": "X-API-Key",
+            "in": "header",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully retrieved users.",
+            "schema": {
+              "$ref": "#/responses/webResponse"
+            }
+          },
+          "500": {
+            "description": "Internal server error.",
+            "schema": {
+              "$ref": "#/responses/errorResponse"
+            }
+          }
+        }
+      },
+      "post": {
+        "description": "Creates a new user in the system.",
+        "tags": [
+          "users"
+        ],
+        "summary": "Create a new user",
+        "operationId": "createUser",
+        "parameters": [
+          {
+            "type": "string",
+            "description": "API key for authorization",
+            "name": "X-API-Key",
+            "in": "header",
+            "required": true
+          },
+          {
+            "description": "The user object to create.",
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/UserCreateRequest"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully created user.",
+            "schema": {
+              "$ref": "#/responses/webResponse"
+            }
+          },
+          "400": {
+            "description": "Invalid request payload.",
+            "schema": {
+              "$ref": "#/responses/errorResponse"
+            }
+          },
+          "500": {
+            "description": "Internal server error.",
+            "schema": {
+              "$ref": "#/responses/errorResponse"
+            }
+          }
+        }
+      }
+    },
+    "/api/users/{userEmail}": {
+      "get": {
+        "description": "Retrieves a user by its email.",
+        "tags": [
+          "users"
+        ],
+        "summary": "Find a user by email",
+        "operationId": "getUser",
+        "parameters": [
+          {
+            "type": "string",
+            "description": "API key for authorization",
+            "name": "X-API-Key",
+            "in": "header",
+            "required": true
+          },
+          {
+            "type": "string",
+            "description": "Email of the user to retrieve",
+            "name": "userEmail",
+            "in": "path",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully retrieved user.",
+            "schema": {
+              "$ref": "#/responses/webResponse"
+            }
+          },
+          "404": {
+            "description": "User not found.",
+            "schema": {
+              "$ref": "#/responses/errorResponse"
+            }
+          },
+          "500": {
+            "description": "Internal server error.",
+            "schema": {
+              "$ref": "#/responses/errorResponse"
+            }
+          }
+        }
+      },
+      "put": {
+        "description": "Updates an existing user in the system.",
+        "tags": [
+          "users"
+        ],
+        "summary": "Update an existing user",
+        "operationId": "updateUser",
+        "parameters": [
+          {
+            "type": "string",
+            "description": "API key for authorization",
+            "name": "X-API-Key",
+            "in": "header",
+            "required": true
+          },
+          {
+            "type": "string",
+            "description": "The email of the user to update",
+            "name": "userEmail",
+            "in": "path",
+            "required": true
+          },
+          {
+            "description": "The updated user object",
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/UserUpdateRequest"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully updated user.",
+            "schema": {
+              "$ref": "#/responses/webResponse"
+            }
+          },
+          "400": {
+            "description": "Invalid request payload.",
+            "schema": {
+              "$ref": "#/responses/errorResponse"
+            }
+          },
+          "404": {
+            "description": "User not found.",
+            "schema": {
+              "$ref": "#/responses/errorResponse"
+            }
+          },
+          "500": {
+            "description": "Internal server error.",
+            "schema": {
+              "$ref": "#/responses/errorResponse"
+            }
+          }
+        }
+      },
+      "delete": {
+        "description": "Deletes an existing user from the system.",
+        "tags": [
+          "users"
+        ],
+        "summary": "Delete an existing user",
+        "operationId": "deleteUser",
+        "parameters": [
+          {
+            "type": "string",
+            "description": "API key for authorization",
+            "name": "X-API-Key",
+            "in": "header",
+            "required": true
+          },
+          {
+            "type": "string",
+            "description": "Email of the user to delete",
+            "name": "userEmail",
+            "in": "path",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully deleted user.",
+            "schema": {
+              "$ref": "#/responses/webResponse"
+            }
+          },
+          "404": {
+            "description": "User not found.",
+            "schema": {
+              "$ref": "#/responses/errorResponse"
+            }
+          },
+          "500": {
+            "description": "Internal server error.",
+            "schema": {
+              "$ref": "#/responses/errorResponse"
+            }
+          }
+        }
+      }
+    }
+  },
+  "definitions": {
+    "UserCreateRequest": {
+      "description": "UserCreateRequest represents the request payload for updating a user",
+      "type": "object",
+      "required": [
+        "email",
+        "name"
+      ],
+      "properties": {
+        "email": {
+          "description": "Email of the user",
+          "type": "string",
+          "x-go-name": "Email"
+        },
+        "name": {
+          "description": "Updated name of the user",
+          "type": "string",
+          "maxLength": 200,
+          "minLength": 1,
+          "x-go-name": "Name"
+        }
+      },
+      "x-go-package": "rest_api/internal/apps/register/model/web"
+    },
+    "UserUpdateRequest": {
+      "description": "UserUpdateRequest represents the request payload for updating a user",
+      "type": "object",
+      "required": [
+        "email",
+        "name"
+      ],
+      "properties": {
+        "email": {
+          "description": "Email of the user",
+          "type": "string",
+          "x-go-name": "Email"
+        },
+        "name": {
+          "description": "Updated name of the user",
+          "type": "string",
+          "maxLength": 200,
+          "minLength": 1,
+          "x-go-name": "Name"
+        }
+      },
+      "x-go-package": "rest_api/internal/apps/register/model/web"
+    }
+  },
+  "responses": {
+    "errorResponse": {
+      "description": "ErrorResponse represents an error response",
+      "schema": {
+        "type": "object",
+        "properties": {
+          "message": {
+            "type": "string",
+            "x-go-name": "Message"
+          }
+        }
+      },
+      "headers": {
+        "code": {
+          "type": "integer",
+          "format": "int64",
+          "example": 400,
+          "description": "The HTTP status code"
+        },
+        "error": {
+          "example": "{\"message\": \"Invalid request payload\"}",
+          "description": "The error details"
+        },
+        "status": {
+          "type": "string",
+          "example": "\"Bad Request\"",
+          "description": "The status message corresponding to the status code"
+        }
+      }
+    },
+    "webResponse": {
+      "description": "WebResponse is a generic response structure used for API responses.",
+      "schema": {},
+      "headers": {
+        "code": {
+          "type": "integer",
+          "format": "int64",
+          "example": 200,
+          "description": "The HTTP status code"
+        },
+        "data": {
+          "example": "{\"email\": \"john@gmail.com\", \"name\": \"John Doe\"}",
+          "description": "The data payload of the response"
+        },
+        "status": {
+          "type": "string",
+          "example": "\"OK\"",
+          "description": "The status message corresponding to the status code"
+        }
+      }
+    }
+  }
+}

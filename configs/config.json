@@ -1,0 +1,16 @@
+{
+  "app": {
+    "name": "rest_api",
+    "version": "1.0.0",
+    "author": "kosy-wer"
+  },
+  "database": {
+    "dbname" : "postgres",
+    "show_sql": true,
+    "username": "postgres",
+    "password": "V_ux5p4qF7F*7xm",
+    "host": "postgresql://postgres.ymbtbodeofdcgnsgxzzg:V_ux5p4qF7F*7xm@aws-0-ap-southeast-1.pooler.supabase.com:6543/postgres",
+    "port": 5432,
+    "dsn": "postgres://postgres.ymbtbodeofdcgnsgxzzg:V_ux5p4qF7F*7xm@aws-0-ap-southeast-1.pooler.supabase.com:6543/postgres"
+  }
+}
