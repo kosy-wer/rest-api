@@ -14,7 +14,6 @@ import (
 	//emailService "rest_api/internal/apps/email/service"
 
 	"rest_api/internal/apps/database"
-	"fmt"
 
 	//"rest_api/internal/apps/register/middleware"
 	"rest_api/internal/apps/register/controller"
@@ -92,7 +91,7 @@ func main() {
 	helper.PanicIfError(err)
     dsn := os.Getenv("DATABASE_DSN")
 
-    fmt.Println("PORT:", port)
-    fmt.Println("DATABASE_DSN:", dsn)
+  log.Printf("PORT:", port)
+  log.Printf("DATABASE_DSN:", dsn)
 	log.Printf("start server")
 }
