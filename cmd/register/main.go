@@ -91,7 +91,5 @@ func main() {
 	helper.PanicIfError(err)
     dsn := os.Getenv("DATABASE_DSN")
 
-  log.Printf("PORT:", port)
-  log.Printf("DATABASE_DSN:", dsn)
 	log.Printf("start server")
 }
