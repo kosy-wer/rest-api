@@ -11,7 +11,7 @@ import (
 
 func GetConnection() (*sql.DB, error) {
 	config := viper.New()
-	config.SetConfigName("config")
+	/*config.SetConfigName("config")
 	config.SetConfigType("json")
 	config.AddConfigPath("/data/data/com.termux/files/home/go/configs") // path configs
 
@@ -19,7 +19,7 @@ func GetConnection() (*sql.DB, error) {
 	if err := config.ReadInConfig(); err != nil {
 		return nil, fmt.Errorf("error reading config file: %w", err)
 	}
-
+ */
 	// Ambil DSN
 	dsn := config.GetString("database.dsn")
 
