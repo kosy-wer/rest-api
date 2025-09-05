@@ -4,12 +4,13 @@ import (
 	"database/sql"
 	"fmt"
 	"time"
+	"os"
 	_ "github.com/lib/pq"
 	//"github.com/spf13/viper"
 )
 
 func GetConnection() (*sql.DB, error) {
-	config := viper.New()
+	//config := viper.New()
 	/*config.SetConfigName("config")
 	config.SetConfigType("json")
 	config.AddConfigPath("/data/data/com.termux/files/home/go/configs") // path configs
