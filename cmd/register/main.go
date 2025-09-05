@@ -89,7 +89,6 @@ func main() {
 	//
 	err = server.ListenAndServe()
 	helper.PanicIfError(err)
-    dsn := os.Getenv("DATABASE_DSN")
 
 	log.Printf("start server")
 }
