@@ -25,6 +25,8 @@ import (
 	_ "github.com/lib/pq"
 )
 
+
+
 func main() {
 	db, err := database.GetConnection()
 	if err != nil {
@@ -44,7 +46,8 @@ func main() {
 	}
 	authService := authService.NewAuthService(config, userService)
 	authController := authController.NewAuthController(authService)
-*/
+	*/
+
 	/*emailCon, err := emailConfig.InitEmailConfig()
 	if err != nil {
 		log.Fatalf("Failed to load email config: %v", err)
@@ -62,7 +65,7 @@ func main() {
 	if err != nil {
 		log.Fatalf("Failed to send email: %v", err)
 	}
-	//authcontroller is non active should commented this code main for local 
+	//authcontroller is non active should commented this code main for local
 	router := api.NewRouter(userController, authController)
 	server := http.Server{
 		Addr:    "localhost:3000",
@@ -70,25 +73,28 @@ func main() {
 		//Handler: middleware.NewAuthMiddleware(router),
 	}
 	*/
+
+	// Ambil PORT dari ENV, fallback ke 3000
 	port := os.Getenv("PORT")
-  if port == "" {
-    port = "3000" // default jika running lokal
-} 
+	if port == "" {
+		port = "3000" // fallback untuk local
+	}
 
+	log.Printf("Starting server on port: %s", port)
+	log.Printf("Using DATABASE_DSN: %s", os.Getenv("DATABASE_DSN"))
+
+	// Router aktif
 	router := api.NewRouter(userController)
-  server := http.Server{
-    Addr:    ":" + port,
-    Handler: router,
-  }
+	server := http.Server{
+		Addr:    ":" + port,
+		Handler: router,
+	}
 
-	// Inisialisasi konfigurasi
-
-	// Verifikasi bahwa konfigurasi telah diinisialisasi dengan benar
 	log.Printf("start server")
 
-	//
 	err = server.ListenAndServe()
 	helper.PanicIfError(err)
 
 	log.Printf("start server")
 }
+
