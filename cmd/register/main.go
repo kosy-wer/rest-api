@@ -14,6 +14,7 @@ import (
 	//emailService "rest_api/internal/apps/email/service"
 
 	"rest_api/internal/apps/database"
+	"fmt"
 
 	//"rest_api/internal/apps/register/middleware"
 	"rest_api/internal/apps/register/controller"
