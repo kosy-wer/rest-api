@@ -4,9 +4,8 @@ import (
 	"database/sql"
 	"fmt"
 	"time"
-
-	"github.com/spf13/viper"
 	_ "github.com/lib/pq"
+	//"github.com/spf13/viper"
 )
 
 func GetConnection() (*sql.DB, error) {
@@ -21,7 +20,8 @@ func GetConnection() (*sql.DB, error) {
 	}
  */
 	// Ambil DSN
-	dsn := config.GetString("database.dsn")
+	//dsn := config.GetString("database.dsn")
+	dsn := os.Getenv("DATABASE_DSN")
 
 	// Koneksi ke database
 	db, err := sql.Open("postgres", dsn)
