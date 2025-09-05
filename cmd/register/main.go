@@ -4,6 +4,7 @@ import (
 	"log"
 	"net/http"
 	"rest_api/api"
+	"os"
 	/*
 	authController "rest_api/internal/apps/auth/controller"
 	"rest_api/internal/apps/auth/load"
@@ -61,7 +62,7 @@ func main() {
 	if err != nil {
 		log.Fatalf("Failed to send email: %v", err)
 	}
-	//authcontroller is non active should commented
+	//authcontroller is non active should commented this code main for local 
 	router := api.NewRouter(userController, authController)
 	server := http.Server{
 		Addr:    "localhost:3000",
@@ -74,6 +75,7 @@ if port == "" {
     port = "3000" // default jika running lokal
 }
 
+	router := api.NewRouter(userController)
 server := http.Server{
     Addr:    ":" + port,
     Handler: router,
