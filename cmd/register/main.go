@@ -71,15 +71,15 @@ func main() {
 	}
 	*/
 	port := os.Getenv("PORT")
-if port == "" {
+  if port == "" {
     port = "3000" // default jika running lokal
-}
+} 
 
 	router := api.NewRouter(userController)
-server := http.Server{
+  server := http.Server{
     Addr:    ":" + port,
     Handler: router,
-}
+  }
 
 	// Inisialisasi konfigurasi
 
