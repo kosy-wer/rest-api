@@ -61,13 +61,23 @@ func main() {
 	if err != nil {
 		log.Fatalf("Failed to send email: %v", err)
 	}
-	*/
-	router := api.NewRouter(userController, /*authController*/)
+	//authcontroller is non active should commented
+	router := api.NewRouter(userController, authController)
 	server := http.Server{
 		Addr:    "localhost:3000",
 		Handler: router,
 		//Handler: middleware.NewAuthMiddleware(router),
 	}
+	*/
+	port := os.Getenv("PORT")
+if port == "" {
+    port = "3000" // default jika running lokal
+}
+
+server := http.Server{
+    Addr:    ":" + port,
+    Handler: router,
+}
 
 	// Inisialisasi konfigurasi
 
