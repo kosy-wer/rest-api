@@ -90,7 +90,6 @@ func main() {
 	//
 	err = server.ListenAndServe()
 	helper.PanicIfError(err)
-	port := os.Getenv("PORT")
     dsn := os.Getenv("DATABASE_DSN")
 
     fmt.Println("PORT:", port)
