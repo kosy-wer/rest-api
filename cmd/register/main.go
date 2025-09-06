@@ -1,78 +1,100 @@
 package main
 
 import (
-	"fmt"
-	"log/slog"
+	"log"
 	"net/http"
+	"rest_api/api"
 	"os"
-	"strconv"
-	"time"
+	/*
+	authController "rest_api/internal/apps/auth/controller"
+	"rest_api/internal/apps/auth/load"
+	authService "rest_api/internal/apps/auth/service"
+*/
+	//emailConfig "rest_api/internal/apps/email/config"
+	//emailService "rest_api/internal/apps/email/service"
+
+	"rest_api/internal/apps/database"
+
+	//"rest_api/internal/apps/register/middleware"
+	"rest_api/internal/apps/register/controller"
+	"rest_api/internal/apps/register/helper"
+	"rest_api/internal/apps/register/repository"
+	"rest_api/internal/apps/register/service"
+
+	"github.com/go-playground/validator/v10"
+	_ "github.com/lib/pq"
 )
 
-const version = "0.0.1"
 
-type config struct {
-	port int
-}
-
-type application struct {
-	config config
-	logger *slog.Logger
-}
-
-// routes setup
-func (app *application) routes() http.Handler {
-	mux := http.NewServeMux()
-
-	// health endpoint
-	mux.HandleFunc("/health", func(w http.ResponseWriter, r *http.Request) {
-		w.WriteHeader(http.StatusOK)
-		w.Write([]byte("OK"))
-	})
-
-	// contoh route lain bisa ditambahkan disini
-	return mux
-}
 
 func main() {
-	var cfg config
+	db, err := database.GetConnection()
+	if err != nil {
+		panic(err)
+	}
 
-	// Try to read environment variable for port (given by Railway). Otherwise use default
+	validate := validator.New()
+
+	// Initialize User repository, service, and controller
+	userRepository := repository.NewUserRepository()
+	userService := service.NewUserService(userRepository, db, validate)
+	userController := controller.NewUserController(userService)
+
+	/*config, err := load.InitConfig()
+	if err != nil {
+		log.Fatalf("Failed to load config: %v", err)
+	}
+	authService := authService.NewAuthService(config, userService)
+	authController := authController.NewAuthController(authService)
+	*/
+
+	/*emailCon, err := emailConfig.InitEmailConfig()
+	if err != nil {
+		log.Fatalf("Failed to load email config: %v", err)
+	}
+
+	// Inisialisasi EmailService
+	emailService := emailService.NewEmailService(emailCon)
+
+	// Contoh penggunaan pengiriman email
+	to := "protectorunmatched@gmail.com"
+	subject := "test subject"
+	body := "This you"
+
+	err = emailService.SendEmail(to, subject, body)
+	if err != nil {
+		log.Fatalf("Failed to send email: %v", err)
+	}
+	//authcontroller is non active should commented this code main for local
+	router := api.NewRouter(userController, authController)
+	server := http.Server{
+		Addr:    "localhost:3000",
+		Handler: router,
+		//Handler: middleware.NewAuthMiddleware(router),
+	}
+	*/
+
+	// Ambil PORT dari ENV, fallback ke 3000
 	port := os.Getenv("PORT")
-	intPort, err := strconv.Atoi(port)
-	if err != nil || port == "" {
-		intPort = 4000
+	if port == "" {
+		port = "3000" // fallback untuk local
 	}
 
-	// Set the port to run the API on
-	cfg.port = intPort
+	log.Printf("Starting server on port: %s", port)
+	log.Printf("Using DATABASE_DSN: %s", os.Getenv("DATABASE_DSN"))
 
-	// create the logger
-	logger := slog.New(slog.NewTextHandler(os.Stdout, nil))
-
-	// create the application
-	app := &application{
-		config: cfg,
-		logger: logger,
+	// Router aktif
+	router := api.NewRouter(userController)
+	server := http.Server{
+		Addr:    ":" + port,
+		Handler: router,
 	}
 
-	// create the server
-	srv := &http.Server{
-		Addr:         fmt.Sprintf(":%d", cfg.port),
-		Handler:      app.routes(),
-		IdleTimeout:  45 * time.Second,
-		ReadTimeout:  5 * time.Second,
-		WriteTimeout: 10 * time.Second,
-		ErrorLog:     slog.NewLogLogger(logger.Handler(), slog.LevelError),
-	}
+	log.Printf("start server")
 
-	logger.Info("server started", "addr", srv.Addr)
+	err = server.ListenAndServe()
+	helper.PanicIfError(err)
 
-	// Start the server
-	err = srv.ListenAndServe()
-	if err != nil && err != http.ErrServerClosed {
-		logger.Error(err.Error())
-		os.Exit(1)
-	}
+	log.Printf("start server")
 }
 
