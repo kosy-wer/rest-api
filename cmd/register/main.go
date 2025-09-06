@@ -88,7 +88,7 @@ func main() {
 	// Router aktif
 	router := api.NewRouter(userController)
 	server := http.Server{
-		Addr:    ":" + intPort,
+		Addr: fmt.Sprintf(":%d", intPort), // benar
 		Handler: router,
 	}
 
