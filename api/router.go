@@ -7,7 +7,17 @@ import (
 	"rest_api/internal/apps/register/exception"
 
 	"github.com/julienschmidt/httprouter"
+	"net/http"
+	"encoding/json"
+	"os"
 )
+
+
+func writeJSON(w http.ResponseWriter, status int, data interface{}) error {
+    w.Header().Set("Content-Type", "application/json")
+    w.WriteHeader(status)
+    return json.NewEncoder(w).Encode(data)
+}
 
 func NewRouter(userController controller.UserController,/*authController auth.AuthController*/) *httprouter.Router {
 	router := httprouter.New()
@@ -18,6 +28,15 @@ func NewRouter(userController controller.UserController,/*authController auth.Au
 	router.PUT("/api/users/:userEmail", userController.Update)
 	router.GET("/api/users/:userEmail", userController.FindByEmail)
 	router.DELETE("/api/users/:userEmail", userController.Delete)
+	router.GET("/api/env-check", func(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
+        dsn := os.Getenv("DATABASE_DSN")
+        resp := map[string]string{
+            "status": "ok",
+            "dsn":    dsn,
+        }
+
+        _ = writeJSON(w, http.StatusOK, resp)
+    })
 /*
 	router.POST("/api/login", userController.LoginHandler)
 	 //Login and Logout routes
