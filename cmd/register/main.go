@@ -85,6 +85,11 @@ func main() {
 
 	log.Printf("Starting server on port: %s", port)
 	log.Printf("Using DATABASE_DSN: %s", os.Getenv("DATABASE_DSN"))
+	http.HandleFunc("/health", func(w http.ResponseWriter, r *http.Request) {
+    w.WriteHeader(http.StatusOK)
+    w.Write([]byte("OK"))
+})
+
 
 	// Router aktif
 	router := api.NewRouter(userController)
