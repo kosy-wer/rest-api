@@ -5,6 +5,7 @@ import (
 	"net/http"
 	"rest_api/api"
 	"os"
+	"strconv"
 	/*
 	authController "rest_api/internal/apps/auth/controller"
 	"rest_api/internal/apps/auth/load"
@@ -75,9 +76,10 @@ func main() {
 	*/
 
 	// Ambil PORT dari ENV, fallback ke 3000
-	port := os.Getenv("PORT")
+	port := os.Getenv("PORT")                                                        
+	intPort, err := strconv.Atoi(port)
 	if port == "" {
-		port = "3000" // fallback untuk local
+		port = "4000" // fallback untuk local
 	}
 
 	log.Printf("Starting server on port: %s", port)
@@ -86,7 +88,7 @@ func main() {
 	// Router aktif
 	router := api.NewRouter(userController)
 	server := http.Server{
-		Addr:    ":" + port,
+		Addr:    ":" + intPort,
 		Handler: router,
 	}
 
