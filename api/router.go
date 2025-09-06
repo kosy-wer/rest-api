@@ -28,15 +28,24 @@ func NewRouter(userController controller.UserController,/*authController auth.Au
 	router.PUT("/api/users/:userEmail", userController.Update)
 	router.GET("/api/users/:userEmail", userController.FindByEmail)
 	router.DELETE("/api/users/:userEmail", userController.Delete)
-	router.GET("/api/env-check", func(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
-        dsn := os.Getenv("DATABASE_DSN")
-        resp := map[string]string{
-            "status": "ok",
-            "dsn":    dsn,
-        }
+	// Root route, bisa sekedar welcome
+router.GET("/", func(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
+    resp := map[string]string{
+        "status":  "ok",
+        "message": "Welcome to the API",
+    }
+    _ = writeJSON(w, http.StatusOK, resp)
+})
 
-        _ = writeJSON(w, http.StatusOK, resp)
-    })
+// Railway healthcheck route
+router.GET("/v1/healthcheck", func(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
+    resp := map[string]string{
+        "status":  "ok",
+        "service": "api",
+    }
+    _ = writeJSON(w, http.StatusOK, resp)
+})
+
 /*
 	router.POST("/api/login", userController.LoginHandler)
 	 //Login and Logout routes
