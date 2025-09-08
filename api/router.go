@@ -21,30 +21,11 @@ func writeJSON(w http.ResponseWriter, status int, data interface{}) error {
 func NewRouter(userController controller.UserController,/*authController auth.AuthController*/) *httprouter.Router {
 	router := httprouter.New()
 
-	// User routes
-	router.GET("/api/users", userController.FindAll)
-	router.POST("/api/users", userController.Create)
-	router.PUT("/api/users/:userEmail", userController.Update)
-	router.GET("/api/users/:userEmail", userController.FindByEmail)
-	router.DELETE("/api/users/:userEmail", userController.Delete)
-	// Root route, bisa sekedar welcome
-router.GET("/", func(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
-    resp := map[string]string{
-        "status":  "ok",
-        "message": "Welcome to the API",
-    }
-    _ = writeJSON(w, http.StatusOK, resp)
-})
-
-// Railway healthcheck route
-router.GET("/v1/healthcheck", func(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
-    resp := map[string]string{
-        "status":  "ok",
-        "service": "api",
-    }
-    _ = writeJSON(w, http.StatusOK, resp)
-})
-
+	router.GET("/api/students", userController.FindAll)
+	router.POST("/api/students", userController.Create)
+	router.PUT("/api/students/:userEmail", userController.Update)
+	router.GET("/api/students/:userEmail", userController.FindByEmail)
+	router.DELETE("/api/students/:userEmail", userController.Delete)
 /*
 	router.POST("/api/login", userController.LoginHandler)
 	 //Login and Logout routes
