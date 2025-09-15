@@ -1,10 +1,13 @@
 package main
 
 import (
-	"log"
+	"log/slog"
 	"net/http"
 	"rest_api/api"
 	"os"
+	"time"
+	"fmt"
+	"strconv"
 	/*
 	authController "rest_api/internal/apps/auth/controller"
 	"rest_api/internal/apps/auth/load"
@@ -17,84 +20,100 @@ import (
 
 	//"rest_api/internal/apps/register/middleware"
 	"rest_api/internal/apps/register/controller"
-	"rest_api/internal/apps/register/helper"
+	//"rest_api/internal/apps/register/helper"
 	"rest_api/internal/apps/register/repository"
 	"rest_api/internal/apps/register/service"
 
 	"github.com/go-playground/validator/v10"
 	_ "github.com/lib/pq"
 )
+const version = "0.0.1"
 
+type config struct {
+    port int
+}
 
 
 func main() {
-	db, err := database.GetConnection()
-	if err != nil {
-		panic(err)
-	}
+    var cfg config
 
-	validate := validator.New()
+    // PORT dari env, default 4000
+    port := os.Getenv("PORT")
+    intPort, err := strconv.Atoi(port)
+    if err != nil || intPort == 0 {
+        intPort = 4000
+    }
+    cfg.port = intPort
 
-	// Initialize User repository, service, and controller
-	userRepository := repository.NewUserRepository()
-	userService := service.NewUserService(userRepository, db, validate)
-	userController := controller.NewUserController(userService)
+    // Logger
+    logger := slog.New(slog.NewTextHandler(os.Stdout, nil))
 
-	/*config, err := load.InitConfig()
-	if err != nil {
-		log.Fatalf("Failed to load config: %v", err)
-	}
-	authService := authService.NewAuthService(config, userService)
-	authController := authController.NewAuthController(authService)
-	*/
+    db, err := database.GetConnection()
+    if err != nil {
+        logger.Error("failed to connect database", "error", err)
+        os.Exit(1)
+    }
+    defer db.Close()
 
-	/*emailCon, err := emailConfig.InitEmailConfig()
-	if err != nil {
-		log.Fatalf("Failed to load email config: %v", err)
-	}
+    validate := validator.New()
 
-	// Inisialisasi EmailService
-	emailService := emailService.NewEmailService(emailCon)
+    // Initialize User repository, service, and controller
+    userRepository := repository.NewUserRepository()
+    userService := service.NewUserService(userRepository, db, validate)
+    userController := controller.NewUserController(userService)
 
-	// Contoh penggunaan pengiriman email
-	to := "protectorunmatched@gmail.com"
-	subject := "test subject"
-	body := "This you"
+    /*config, err := load.InitConfig()
+    if err != nil {
+        log.Fatalf("Failed to load config: %v", err)
+    }
+    authService := authService.NewAuthService(config, userService)
+    authController := authController.NewAuthController(authService)
+    */
 
-	err = emailService.SendEmail(to, subject, body)
-	if err != nil {
-		log.Fatalf("Failed to send email: %v", err)
-	}
-	//authcontroller is non active should commented this code main for local
-	router := api.NewRouter(userController, authController)
-	server := http.Server{
-		Addr:    "localhost:3000",
-		Handler: router,
-		//Handler: middleware.NewAuthMiddleware(router),
-	}
-	*/
+    /*emailCon, err := emailConfig.InitEmailConfig()
+    if err != nil {
+        log.Fatalf("Failed to load email config: %v", err)
+    }
 
-	// Ambil PORT dari ENV, fallback ke 3000
-	port := os.Getenv("PORT")
-	if port == "" {
-		port = "3000" // fallback untuk local
-	}
+    // Inisialisasi EmailService
+    emailService := emailService.NewEmailService(emailCon)
 
-	log.Printf("Starting server on port: %s", port)
-	log.Printf("Using DATABASE_DSN: %s", os.Getenv("DATABASE_DSN"))
+    // Contoh penggunaan pengiriman email
+    to := "protectorunmatched@gmail.com"
+    subject := "test subject"
+    body := "This you"
 
-	// Router aktif
-	router := api.NewRouter(userController)
-	server := http.Server{
-		Addr:    ":" + port,
-		Handler: router,
-	}
+    err = emailService.SendEmail(to, subject, body)
+    if err != nil {
+        log.Fatalf("Failed to send email: %v", err)
+    }
+    //authcontroller is non active should commented this code main for local
+    router := api.NewRouter(userController, authController)
+    server := http.Server{
+        Addr:    "localhost:3000",
+        Handler: router,
+        //Handler: middleware.NewAuthMiddleware(router),
+    }
+    */
 
-	log.Printf("start server")
+    // Router aktif
+    router := api.NewRouter(userController)
 
-	err = server.ListenAndServe()
-	helper.PanicIfError(err)
+    // Server
+    srv := &http.Server{
+        Addr:         fmt.Sprintf(":%d", cfg.port),
+        Handler:      router,
+        IdleTimeout:  45 * time.Second,
+        ReadTimeout:  5 * time.Second,
+        WriteTimeout: 10 * time.Second,
+        ErrorLog:     slog.NewLogLogger(logger.Handler(), slog.LevelError),
+    }
 
-	log.Printf("start server")
+    logger.Info("server started", "addr", srv.Addr, "version", version)
+
+    if err := srv.ListenAndServe(); err != nil {
+        logger.Error("server stopped", "error", err)
+        os.Exit(1)
+    }
 }
 
