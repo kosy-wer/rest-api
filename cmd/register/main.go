@@ -98,6 +98,7 @@ func main() {
 
     // Router aktif
     router := api.NewRouter(userController)
+		dsn := os.Getenv("DATABASE_DSN")
 
     // Server
     srv := &http.Server{
@@ -109,7 +110,11 @@ func main() {
         ErrorLog:     slog.NewLogLogger(logger.Handler(), slog.LevelError),
     }
 
-    logger.Info("server started", "addr", srv.Addr, "version", version)
+    logger.Info("server started",
+		"addr", srv.Addr, 
+		"version", version,
+		"dsn",dsn,
+	)
 
     if err := srv.ListenAndServe(); err != nil {
         logger.Error("server stopped", "error", err)
