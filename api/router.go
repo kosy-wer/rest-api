@@ -26,6 +26,21 @@ func NewRouter(userController controller.UserController,/*authController auth.Au
 	router.PUT("/api/students/:userEmail", userController.Update)
 	router.GET("/api/students/:userEmail", userController.FindByEmail)
 	router.DELETE("/api/students/:userEmail", userController.Delete)
+	router.GET("/", func(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
+    resp := map[string]string{
+        "status":  "ok",
+        "message": "Welcome to the API",
+    }
+    _ = writeJSON(w, http.StatusOK, resp)
+})
+
+  router.GET("/v1/healthcheck", func(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
+    resp := map[string]string{
+        "status":  "ok",
+        "service": "api",
+    }
+    _ = writeJSON(w, http.StatusOK, resp)
+})
 /*
 	router.POST("/api/login", userController.LoginHandler)
 	 //Login and Logout routes
