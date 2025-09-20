@@ -1,14 +1,16 @@
 package web
 
-// UserUpdateRequest represents the request payload for updating a user
-// swagger:model
 type UserUpdateRequest struct {
-	// Email of the user
-	// required: true
-	Email string `validate:"required,email" json:"email"`
-	// Updated name of the user
-	// required: true
-	// min length: 1
-	// max length: 200
-	Name string `validate:"required,max=200,min=1" json:"name"`
+    // Email of the user
+    Email     string `validate:"required,email" json:"email"`
+
+    // Updated first name of the user
+    FirstName string `validate:"required,max=100,min=1" json:"first_name"`
+
+    // Updated last name of the user
+    LastName  string `validate:"required,max=100,min=1" json:"last_name"`
+
+    // Optional: if password can be updated
+    Password  string `validate:"omitempty,min=6" json:"password"`
 }
+

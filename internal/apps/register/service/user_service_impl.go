@@ -27,41 +27,45 @@ func NewUserService(userRepository repository.UserRepository, DB *sql.DB, valida
 }
 
 func (service *UserServiceImpl) Create(ctx context.Context, request web.UserCreateRequest) web.UserResponse {
-	err := service.Validate.Struct(request)
-	helper.PanicIfError(err)
+    err := service.Validate.Struct(request)
+    helper.PanicIfError(err)
 
-	tx, err := service.DB.Begin()
-	helper.PanicIfError(err)
-	defer helper.CommitOrRollback(tx)
+    tx, err := service.DB.Begin()
+    helper.PanicIfError(err)
+    defer helper.CommitOrRollback(tx)
 
-	user := domain.Student{
-		Name:  request.Name,
-		Email: request.Email,
-	}
+    user := domain.User{
+        FirstName: request.FirstName,
+        LastName:  request.LastName,
+        Email:     request.Email,
+        Password:  request.Password,
+    }
 
-	user = service.UserRepository.Save(ctx, tx, user)
+    user = service.UserRepository.Save(ctx, tx, user)
 
-	return helper.ToUserResponse(user)
+    return helper.ToUserResponse(user)
 }
 
 func (service *UserServiceImpl) Update(ctx context.Context, request web.UserUpdateRequest) web.UserResponse {
-	err := service.Validate.Struct(request)
-	helper.PanicIfError(err)
+    err := service.Validate.Struct(request)
+    helper.PanicIfError(err)
 
-	tx, err := service.DB.Begin()
-	helper.PanicIfError(err)
-	defer helper.CommitOrRollback(tx)
+    tx, err := service.DB.Begin()
+    helper.PanicIfError(err)
+    defer helper.CommitOrRollback(tx)
 
-	user, err := service.UserRepository.FindByEmail(ctx, tx, request.Email)
-	if err != nil {
-		panic(exception.NewNotFoundError(err.Error()))
-	}
+    user, err := service.UserRepository.FindByEmail(ctx, tx, request.Email)
+    if err != nil {
+        panic(exception.NewNotFoundError(err.Error()))
+    }
 
-	user.Name = request.Name
+    user.FirstName = request.FirstName
+    user.LastName  = request.LastName
+    user.Password  = request.Password
 
-	user = service.UserRepository.Update(ctx, tx, user)
+    user = service.UserRepository.Update(ctx, tx, user)
 
-	return helper.ToUserResponse(user)
+    return helper.ToUserResponse(user)
 }
 
 func (service *UserServiceImpl) Delete(ctx context.Context, userEmail string) {
@@ -129,7 +133,7 @@ func (service *UserServiceImpl) FindAll(ctx context.Context) []web.UserResponse 
 		panic(exception.NewNotFoundError("user exist"))
 	}
 
-	user := domain.Student{
+	user := domain.User{
 		Name:  request.Name,
 		Email: request.Email,
 	}

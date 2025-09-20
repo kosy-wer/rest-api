@@ -297,13 +297,14 @@ func (controller *UserControllerImpl) LoginHandler(writer http.ResponseWriter, r
 	helper.PanicIfError(err)
 
 	userResponse := controller.UserService.FindByName(request.Context(), name)
-	if userResponse.Name == name {
-		webResponse := web.WebResponse{
-			Code:   200,
-			Status: "OK",
-			Data:   userResponse,
-		}
-
-		helper.WriteToResponseBody(writer, webResponse)
-	}
+	fullName := userResponse.FirstName + " " + userResponse.LastName
+if fullName == name {
+    webResponse := web.WebResponse{
+        Code:   200,
+        Status: "OK",
+        Data:   userResponse,
+    }
+    helper.WriteToResponseBody(writer, webResponse)
 }
+}
+

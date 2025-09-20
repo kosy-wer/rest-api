@@ -5,14 +5,16 @@ import (
     "rest_api/internal/apps/register/model/web"
 )
 
-func ToUserResponse(user domain.Student) web.UserResponse {
+func ToUserResponse(user domain.User) web.UserResponse {
     return web.UserResponse{
-        Name: user.Name,
-        Email: user.Email,
+        ID:        user.ID,
+        FirstName: user.FirstName,
+        LastName:  user.LastName,
+        Email:     user.Email,
     }
 }
 
-func ToUserResponses(users []domain.Student) []web.UserResponse {
+func ToUserResponses(users []domain.User) []web.UserResponse {
     var userResponses []web.UserResponse
     for _, user := range users {
         userResponses = append(userResponses, ToUserResponse(user))
